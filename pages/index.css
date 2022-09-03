@@ -240,3 +240,102 @@
 		line-height: 17px;
     }
 }
+
+.popup {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    display: flex;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    /* display: none; */
+}
+.popup__container {
+    position: relative;
+    margin: auto;
+    padding: 34px 36px 37px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    max-width: 430px;
+    width: 100%;
+    box-sizing: border-box;
+}
+@media screen and (max-width: 767px) {
+    .popup__container {
+        max-width: 282px;
+        padding: 25px 22px;
+    }
+}
+.popup__title {
+    margin: 0 0 54px 0;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+}
+@media screen and (max-width: 767px) {
+    .popup__title {
+        margin-bottom: 75px;
+        font-size: 18px;
+        line-height: 22px;
+    }
+}
+.popup__closeButton {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    padding: 0;
+    background: url(../images/Close.svg) center/32px 32px no-repeat;
+}
+@media screen and (max-width: 767px) {
+    .popup__closeButton {
+        top: -36px;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        background-size: 20px 20px;
+    }
+}
+.popup__form {
+    display: flex;
+    flex-direction: column;
+}
+.popup__input {
+    box-sizing: border-box;
+    height: 27px;
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid #000000;
+    opacity: 0.2;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+}
+.popup__input:not(:last-of-type) {
+    margin-bottom: 30px;
+}
+.popup__saveButton {
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+    height: 50px;
+    margin-top: 48px;
+    background: #000000;
+    border-radius: 2px; 
+    color: #FFFFFF;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+@media screen and (max-width: 767px) {
+    .popup__saveButton {
+        height: 46px;
+        font-size: 14px;
+        line-height: 17px;
+    }
+}
