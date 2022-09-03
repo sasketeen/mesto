@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Стас Пройдаков">
+    <link rel="stylesheet" href="./pages/index.css">
+    <title>Mesto</title>
+</head>
+
+<body class="page">
+    <header class="header">
+        <img src="./images/logo.svg" alt="Логотип" class="logo">
+    </header>
+    <main class="content">
+        <section class="profile">
+            <div class="profile__card">
+                <img src="./images/profile__avatar.png" alt="Аватар пользователя" class="profile__avatar">
+                <div class="prifile__info">
+                    <h1 class="profile__name">Жак-Ив Кусто</h1>
+                    <button class="button profile__editButton"></button>
+                    <p class="profile__description">Исследователь океана</p>
+                </div>
+            </div>
+            <button class="button profile__addButton"></button>
+        </section>
+
+        <section class="elements">
+            <ul class="elements__list">
+                <li class="card">
+                    <img src="./images/card__img1.jpg" alt="Церковь на фоне гор" class="card__image">
+                    <div class="card__description">
+                        <h2 class="card__subtitle">Карачаевск</h2>
+                        <button class="button card__likeButton"></button>
+                    </div>
+                </li>
+
+                <li class="card">
+                    <img src="./images/card__img2.jpg" alt="Фото стадиона в Нижнем Новгороде" class="card__image">
+                    <div class="card__description">
+                        <h2 class="card__subtitle">Нижний Новгород</h2>
+                        <button class="button card__likeButton"></button>
+                    </div>
+                </li>
+
+                <li class="card">
+                    <img src="./images/card__img3.jpg" alt="Фото разведенного дворцового моста на фоне Исаакия и адмиралтейства" class="card__image">
+                    <div class="card__description">
+                        <h2 class="card__subtitle">Санкт-Петербург</h2>
+                        <button class="button card__likeButton"></button>
+                    </div>
+                </li>
+
+                <li class="card">
+                    <img src="../images/card__img4.jpg" alt="Пещера, потолок который покрывает голубой лед" class="card__image">
+                    <div class="card__description">
+                        <h2 class="card__subtitle">Кунгурская ледяная пещера</h2>
+                        <button class="button card__likeButton"></button>
+                    </div>
+                </li>
+
+                <li class="card">
+                    <img src="./images/card__img5.jpg" alt="Столбы выветривания на плато Маньпупунёр зимой" class="card__image">
+                    <div class="card__description">
+                        <h2 class="card__subtitle">Маньпупунёр</h2>
+                        <button class="button card__likeButton"></button>
+                    </div>
+                </li>
+
+                <li class="card">
+                    <img src="../images/card__img6.jpg" alt="Фотография скал на фоне реки" class="card__image">
+                    <div class="card__description">
+                        <h2 class="card__subtitle">Ленские столбы</h2>
+                        <button class="button card__likeButton"></button>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer class="footer">
+        <p class="footer__copyright">&copy; 2022 Mesto Russia</p>
+    </footer>
+    <div class="popup">
+        <div class="popup__container">
+            <h2 class="popup__title">Редактировать профиль</h2>
+            <button class="button popup__closeButton"></button>
+            <form action="#" class="popup__form">
+                <input type="text" class="popup__input popup__input_name">
+                <input type="text" class="popup__input popup__input_description">
+                <button type="submit" class="button popup__saveButton">Сохранить</button>
+            </form>
+        </div>
+    </div>
+    <script src="scripts/script.js"></script>
+</body>
+</html>
