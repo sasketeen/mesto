@@ -1,5 +1,15 @@
 @import url(../vendor/normalize.css);
 @import url(../fonts/fonts.css);
+.button {
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    transition: opacity ease-in-out 0.3s;
+}
+.button:hover {
+    opacity: 0.6;
+}
 .page {
     max-width: 1280px;
     min-width: 320px;
@@ -112,8 +122,6 @@
 }
 
 .profile__editButton {
-    box-sizing: border-box;
-    padding: 0;
     width: 24px;
     height: 24px;
     border: 1px #FFFFFF solid;
@@ -145,8 +153,6 @@
 }
 
 .profile__addButton {
-    box-sizing: border-box;
-    padding: 0;
     width: 150px;
     height: 50px;
     border: 2px #FFFFFF solid;
@@ -199,26 +205,16 @@
     max-width: calc(100% - 22px);
 }
 .card__likeButton {
-    padding: 0;
     width: 22px;
     height: 19px;
-    border: none;
     background: url(../images/like.svg) center/22px 19px no-repeat;
-    cursor: pointer;
 }
 .card__likeButton:hover {
     opacity: 0.5;
 }
 
 .card__likeButton_active {
-    padding: 0;
-    width: 22px;
-    height: 19px;
-    border: none;
     background: url(../images/like_active.svg) center/22px 19px no-repeat;
-}
-.button:hover {
-    opacity: 0.6;
 }
 
 .footer {
@@ -249,7 +245,10 @@
     top: 0;
     width: 100vw;
     height: 100vh;
-    /* display: none; */
+    display: none;
+}
+.popup_opened {
+    display: flex;
 }
 .popup__container {
     position: relative;
@@ -287,8 +286,6 @@
     right: -40px;
     width: 32px;
     height: 32px;
-    border: none;
-    padding: 0;
     background: url(../images/Close.svg) center/32px 32px no-repeat;
 }
 @media screen and (max-width: 767px) {
@@ -309,8 +306,7 @@
     height: 27px;
     padding: 0;
     border: none;
-    border-bottom: 1px solid #000000;
-    opacity: 0.2;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
@@ -319,9 +315,6 @@
     margin-bottom: 30px;
 }
 .popup__saveButton {
-    box-sizing: border-box;
-    padding: 0;
-    border: none;
     height: 50px;
     margin-top: 48px;
     background: #000000;
@@ -330,6 +323,9 @@
     font-weight: 400;
     font-size: 18px;
     line-height: 22px;
+}
+.popup__saveButton:hover {
+    opacity: 0.8;
 }
 
 @media screen and (max-width: 767px) {
