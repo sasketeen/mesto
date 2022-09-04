@@ -1,13 +1,13 @@
 .popup__input {
-    box-sizing: border-box;
-    height: 27px;
-    padding: 0;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
+  box-sizing: border-box;
+  height: 27px;
+  padding: 0 0 10px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
 }
 .popup__input:not(:last-of-type) {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
