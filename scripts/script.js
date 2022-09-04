@@ -1,14 +1,11 @@
 let popup = document.querySelector('.popup'),
-    form = document.querySelector('.popup__form'),
+    form = document.forms.editForm,
     edit = document.querySelector('.profile__editButton'),
     close = document.querySelector('.popup__closeButton'),
-    nameInput = form.querySelector('.popup__input_name'),
-    descriptionInput = form.querySelector('.popup__input_description'),
+    nameInput = form.querySelector('.popup__input_type_name'),
+    descriptionInput = form.querySelector('.popup__input_type_description'),
     profileName = document.querySelector('.profile__name'),
     profileDescription = document.querySelector('.profile__description');
-
-    nameInput.value = profileName.textContent;
-    descriptionInput.value =  profileDescription.textContent;
 
 let formSubmitHandler = evt => {
     evt.preventDefault();
@@ -19,6 +16,8 @@ let formSubmitHandler = evt => {
 
 const openPopup = () => {
     popup.classList.add('popup_opened');
+    nameInput.value = profileName.textContent;
+    descriptionInput.value =  profileDescription.textContent;
 }
 const closePopup = () => {
     popup.classList.remove('popup_opened');
