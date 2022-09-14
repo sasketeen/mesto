@@ -47,7 +47,7 @@ const createCard = (name, link) => {
   cardSubtitle.textContent = name;
   deleteButton.addEventListener('click', () => { deleteButton.closest('.card').remove() });
   likeButton.addEventListener('click', () => { likeButton.classList.toggle('card__likeButton_active') });
-  cardImage.addEventListener('click', ... );
+  cardImage.addEventListener('click', openPopup);
   elementsList.prepend(card);
 };
 const formSubmitHandler = evt => {
