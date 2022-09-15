@@ -1,12 +1,14 @@
-const popup = document.querySelector('.popup'),
-      popupEdit = document.querySelector('.popup_type_edit'),
+const popupEdit = document.querySelector('.popup_type_edit'),
       popupAdd = document.querySelector('.popup_type_add'),
       formEdit = document.forms.editForm,
+      formAdd = document.forms.addForm,
       buttonEdit = document.querySelector('.profile__editButton'),
       buttonAdd = document.querySelector('.profile__addButton'),
       buttonClose = document.querySelectorAll('.popup__closeButton'),
-      nameInput = formEdit.querySelector('.popup__input_type_name'),
+      usernameInput = formEdit.querySelector('.popup__input_type_username'),
       descriptionInput = formEdit.querySelector('.popup__input_type_description'),
+      placeNameInput = formAdd.querySelector('.popup__input_type_name'),
+      linkInput = formAdd.querySelector('.popup__input_type_link'),
       profileName = document.querySelector('.profile__name'),
       profileDescription = document.querySelector('.profile__description'),
       elementsList =  document.querySelector('.elements__list'),
@@ -53,11 +55,18 @@ const createCard = (name, link) => {
   // cardImage.addEventListener('click', openPopup(popupEdit));
   elementsList.prepend(card);
 };
-const formEditSubmitHandler = (evt) => {
-    evt.preventDefault();
-    profileName.textContent = nameInput.value;
-    profileDescription.textContent = descriptionInput.value;
-    closePopup();
+
+const formEditSubmitHandler = (event) => {
+  event.preventDefault();
+  profileName.textContent = usernameInput.value;
+  profileDescription.textContent = descriptionInput.value;
+  closePopup(event);
+};
+
+const formAddSubmitHandler = (event) => {
+  event.preventDefault();
+  createCard(placeNameInput.value,linkInput.value);
+  closePopup(event);
 };
 
 const openPopup = (namePopup) => {
@@ -73,9 +82,10 @@ const closePopup = (event) => {
 initialCards.forEach(card => { createCard(card.name, card.link) });
 
 formEdit.addEventListener('submit', formEditSubmitHandler);
+formAdd.addEventListener('submit', formAddSubmitHandler);
 buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
-  nameInput.value = profileName.textContent;
+  usernameInput.value = profileName.textContent;
   descriptionInput.value =  profileDescription.textContent;
 });
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });

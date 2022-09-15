@@ -39,7 +39,7 @@
       <h2 class="popup__title">Редактировать профиль</h2>
       <button class="button popup__closeButton" type="button" name="close"></button>
       <form action="#" method="post" name="editForm" class="popup__form">
-        <input type="text" class="popup__input popup__input_type_name" name="name">
+        <input type="text" class="popup__input popup__input_type_username" name="username">
         <input type="text" class="popup__input popup__input_type_description" name="description">
         <button type="submit" class="button popup__saveButton">Сохранить</button>
       </form>
@@ -51,8 +51,8 @@
       <h2 class="popup__title">Новое место</h2>
       <button class="button popup__closeButton" type="button" name="close"></button>
       <form action="#" method="post" name="addForm" class="popup__form">
-        <input type="text" class="popup__input popup__input_type_name" name="name" placeholder="Название">
-        <input type="url" class="popup__input popup__input_type_link" name="link" placeholder="Ссылка на картинку">
+        <input type="text" class="popup__input popup__input_type_name" name="name" placeholder="Название" required>
+        <input type="url" class="popup__input popup__input_type_link" name="link" placeholder="Ссылка на картинку" required>
         <button type="submit" class="button popup__saveButton">Создать</button>
       </form>
     </div>
