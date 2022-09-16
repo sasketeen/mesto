@@ -64,14 +64,14 @@ const createCard = (name, link) => {
   elementsList.prepend(card);
 };
 
-const formEditSubmitHandler = (event) => {
+const handleFormEditSubmit = (event) => {
   event.preventDefault();
   profileName.textContent = usernameInput.value;
   profileDescription.textContent = descriptionInput.value;
   closePopup(event);
 };
 
-const formAddSubmitHandler = (event) => {
+const handleFormAddSubmit = (event) => {
   event.preventDefault();
   createCard(placeNameInput.value,linkInput.value);
   closePopup(event);
@@ -91,8 +91,8 @@ const closePopup = (event) => {
 
 initialCards.forEach(card => { createCard(card.name, card.link) });
 
-formEdit.addEventListener('submit', formEditSubmitHandler);
-formAdd.addEventListener('submit', formAddSubmitHandler);
+formEdit.addEventListener('submit', handleFormEditSubmit);
+formAdd.addEventListener('submit', handleFormAddSubmit);
 
 buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
