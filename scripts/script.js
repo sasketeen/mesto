@@ -17,15 +17,15 @@ const profileDescription = document.querySelector('.profile__description');
 const elementsList =  document.querySelector('.elements__list');
 const cardCopy = document.querySelector('.cardCopy');
 
-const createCard = (name, link) => {
+const createCard = (cardData) => {
   const card = cardCopy.content.cloneNode(true);
   const cardImage = card.querySelector('.card__image');
   const cardSubtitle = card.querySelector('.card__subtitle');
   const buttonDelete = card.querySelector('.card__buttonDelete');
   const buttonLike = card.querySelector('.card__likeButton');
-  cardImage.src = link;
-  cardImage.alt = name;
-  cardSubtitle.textContent = name;
+  cardImage.src = cardData.link;
+  cardImage.alt = cardData.name;
+  cardSubtitle.textContent = cardData.name;
   buttonDelete.addEventListener('click', () => { buttonDelete.closest('.card').remove() });
   buttonLike.addEventListener('click', () => { buttonLike.classList.toggle('card__likeButton_active') });
 
@@ -70,22 +70,18 @@ const closePopup = (event) => {
   openedPopup.classList.remove('popup_opened');
 };
 
+const resetForm = (event) => {
+  const popup = event.target.closest('.popup');
+  popup.querySelector('.popup__form').reset();
+};
 
 fetch('../data/initial-cards.json')
 .then((response) => {
   return response.json();
 })
 .then((data) => {
-  data.forEach(cardData => { createCard(cardData) });
+  data.forEach(cardData => { renderCard(cardData) });
 });
-
-const resetForm = (event) => {
-  const popup = event.target.closest('.popup');
-  popup.querySelector('.popup__form').reset();
-};
-
-initialCards.forEach(cardData => { renderCard(cardData) });
-
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
 formAdd.addEventListener('submit', handleFormAddSubmit);
