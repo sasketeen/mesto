@@ -75,6 +75,7 @@ const handleFormAddSubmit = (event) => {
   event.preventDefault();
   createCard(placeNameInput.value,linkInput.value);
   closePopup(event);
+  resetForm(event);
 };
 
 const openPopup = (namePopup) => {
@@ -83,10 +84,15 @@ const openPopup = (namePopup) => {
 
 const closePopup = (event) => {
   const openedPopup = event.target.closest('.popup');
-  try {
-    openedPopup.querySelector('.popup__form').reset();
-  } catch {};
+  // try {
+  //   openedPopup.querySelector('.popup__form').reset();
+  // } catch {};
   openedPopup.classList.remove('popup_opened');
+};
+
+const resetForm = (event) => {
+  const popup = event.target.closest('.popup');
+  popup.querySelector('.popup__form').reset();
 };
 
 initialCards.forEach(card => { createCard(card.name, card.link) });
