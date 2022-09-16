@@ -61,8 +61,13 @@ const createCard = (name, link) => {
                                                     popupSubtitle.textContent = event.target.alt;
                                                     openPopup(popupZoom);
                                                   });
-  elementsList.prepend(card);
+  return (card);
 };
+
+const renderCard = (name, link) => {
+  const card = createCard(name, link);
+  elementsList.prepend(card);
+}
 
 const handleFormEditSubmit = (event) => {
   event.preventDefault();
@@ -73,7 +78,7 @@ const handleFormEditSubmit = (event) => {
 
 const handleFormAddSubmit = (event) => {
   event.preventDefault();
-  createCard(placeNameInput.value,linkInput.value);
+  renderCard(placeNameInput.value,linkInput.value);
   closePopup(event);
   resetForm(event);
 };
@@ -84,9 +89,6 @@ const openPopup = (namePopup) => {
 
 const closePopup = (event) => {
   const openedPopup = event.target.closest('.popup');
-  // try {
-  //   openedPopup.querySelector('.popup__form').reset();
-  // } catch {};
   openedPopup.classList.remove('popup_opened');
 };
 
@@ -95,7 +97,7 @@ const resetForm = (event) => {
   popup.querySelector('.popup__form').reset();
 };
 
-initialCards.forEach(card => { createCard(card.name, card.link) });
+initialCards.forEach(card => { renderCard(card.name, card.link) });
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
 formAdd.addEventListener('submit', handleFormAddSubmit);
