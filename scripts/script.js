@@ -81,8 +81,7 @@ const handleFormAddSubmit = (event) => {
   const cardData = {
       name: placeNameInput.value,
       link: linkInput.value
-    };
-  console.log(cardData.link);
+  };
   renderCard(cardData);
   closePopup(event);
   resetForm(event);
