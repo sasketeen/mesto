@@ -44,15 +44,15 @@ const initialCards = [
   }
 ];
 
-const createCard = (name, link) => {
+const createCard = (cardData) => {
   const card = cardCopy.content.cloneNode(true),
         cardImage = card.querySelector('.card__image'),
         cardSubtitle = card.querySelector('.card__subtitle'),
         deleteButton = card.querySelector('.card__buttonDelete'),
         likeButton = card.querySelector('.card__likeButton');
-  cardImage.src = link;
-  cardImage.alt = name;
-  cardSubtitle.textContent = name;
+  cardImage.src = cardData.link;
+  cardImage.alt = cardData.name;
+  cardSubtitle.textContent = cardData.name;
   deleteButton.addEventListener('click', () => { deleteButton.closest('.card').remove() });
   likeButton.addEventListener('click', () => { likeButton.classList.toggle('card__likeButton_active') });
   cardImage.addEventListener('click', (event) => {
@@ -64,8 +64,8 @@ const createCard = (name, link) => {
   return (card);
 };
 
-const renderCard = (name, link) => {
-  const card = createCard(name, link);
+const renderCard = (cardData) => {
+  const card = createCard(cardData);
   elementsList.prepend(card);
 }
 
@@ -78,7 +78,12 @@ const handleFormEditSubmit = (event) => {
 
 const handleFormAddSubmit = (event) => {
   event.preventDefault();
-  renderCard(placeNameInput.value,linkInput.value);
+  const cardData = {
+      name: placeNameInput.value,
+      link: linkInput.value
+    };
+  console.log(cardData.link);
+  renderCard(cardData);
   closePopup(event);
   resetForm(event);
 };
@@ -97,7 +102,7 @@ const resetForm = (event) => {
   popup.querySelector('.popup__form').reset();
 };
 
-initialCards.forEach(card => { renderCard(card.name, card.link) });
+initialCards.forEach(cardData => { renderCard(cardData) });
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
 formAdd.addEventListener('submit', handleFormAddSubmit);
