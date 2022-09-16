@@ -17,33 +17,6 @@ const popupEdit = document.querySelector('.popup_type_edit'),
       elementsList =  document.querySelector('.elements__list'),
       cardCopy = document.querySelector('.cardCopy');
 
-const initialCards = [
-  {
-    name: 'Карачаевск',
-    link: './images/card__img1.jpg'
-  },
-  {
-    name: 'Нижний Новгород',
-    link: './images/card__img2.jpg'
-  },
-  {
-    name: 'Санкт-Петербург',
-    link: './images/card__img3.jpg'
-  },
-  {
-    name: 'Кунгурская ледяная пещера',
-    link: './images/card__img4.jpg'
-  },
-  {
-    name: 'Маньпупунёр',
-    link: './images/card__img5.jpg'
-  },
-  {
-    name: 'Ленские столбы',
-    link: './images/card__img6.jpg'
-  }
-];
-
 const createCard = (name, link) => {
   const card = cardCopy.content.cloneNode(true),
         cardImage = card.querySelector('.card__image'),
@@ -89,7 +62,13 @@ const closePopup = (event) => {
   openedPopup.classList.remove('popup_opened');
 };
 
-initialCards.forEach(card => { createCard(card.name, card.link) });
+fetch('../data/initial-cards.json')
+.then((response) => {
+  return response.json();
+})
+.then((data) => {
+  data.forEach(cardData => { createCard(cardData) });
+});
 
 formEdit.addEventListener('submit', formEditSubmitHandler);
 formAdd.addEventListener('submit', formAddSubmitHandler);
