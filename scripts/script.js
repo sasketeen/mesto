@@ -44,6 +44,7 @@ const initialCards = [
   }
 ];
 
+
 const createCard = (name, link) => {
   const card = cardCopy.content.cloneNode(true);
   const cardImage = card.querySelector('.card__image');
@@ -55,26 +56,37 @@ const createCard = (name, link) => {
   cardSubtitle.textContent = name;
   buttonDelete.addEventListener('click', () => { buttonDelete.closest('.card').remove() });
   buttonLike.addEventListener('click', () => { buttonLike.classList.toggle('card__likeButton_active') });
+
   cardImage.addEventListener('click', (event) => {
                                                     popupImage.src = event.target.src;
                                                     popupImage.alt = event.target.alt;
                                                     popupSubtitle.textContent = event.target.alt;
                                                     openPopup(popupZoom);
                                                   });
-  elementsList.prepend(card);
+  return (card);
 };
 
-const formEditSubmitHandler = (event) => {
+const renderCard = (cardData) => {
+  const card = createCard(cardData);
+  elementsList.prepend(card);
+}
+
+const handleFormEditSubmit = (event) => {
   event.preventDefault();
   profileName.textContent = usernameInput.value;
   profileDescription.textContent = descriptionInput.value;
   closePopup(event);
 };
 
-const formAddSubmitHandler = (event) => {
+const handleFormAddSubmit = (event) => {
   event.preventDefault();
-  createCard(placeNameInput.value,linkInput.value);
+  const cardData = {
+      name: placeNameInput.value,
+      link: linkInput.value
+  };
+  renderCard(cardData);
   closePopup(event);
+  resetForm(event);
 };
 
 const openPopup = (namePopup) => {
@@ -83,16 +95,18 @@ const openPopup = (namePopup) => {
 
 const closePopup = (event) => {
   const openedPopup = event.target.closest('.popup');
-  try {
-    openedPopup.querySelector('.popup__form').reset();
-  } catch {};
   openedPopup.classList.remove('popup_opened');
 };
 
-initialCards.forEach(card => { createCard(card.name, card.link) });
+const resetForm = (event) => {
+  const popup = event.target.closest('.popup');
+  popup.querySelector('.popup__form').reset();
+};
 
-formEdit.addEventListener('submit', formEditSubmitHandler);
-formAdd.addEventListener('submit', formAddSubmitHandler);
+initialCards.forEach(cardData => { renderCard(cardData) });
+
+formEdit.addEventListener('submit', handleFormEditSubmit);
+formAdd.addEventListener('submit', handleFormAddSubmit);
 
 buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
