@@ -1,21 +1,21 @@
-const popupEdit = document.querySelector('.popup_type_edit');
-const popupAdd = document.querySelector('.popup_type_add');
-const popupZoom = document.querySelector('.popup_type_image');
-const formEdit = document.forms.editForm;
-const formAdd = document.forms.addForm;
-const buttonEdit = document.querySelector('.profile__editButton');
-const buttonAdd = document.querySelector('.profile__addButton');
-const buttonClose = document.querySelectorAll('.popup__closeButton');
-const usernameInput = formEdit.querySelector('.popup__input_type_username');
-const descriptionInput = formEdit.querySelector('.popup__input_type_description');
-const placeNameInput = formAdd.querySelector('.popup__input_type_name');
-const linkInput = formAdd.querySelector('.popup__input_type_link');
-const popupImage = popupZoom.querySelector('.popup__image');
-const popupSubtitle = popupZoom.querySelector('.popup__subtitle');
-const profileName = document.querySelector('.profile__name');
-const profileDescription = document.querySelector('.profile__description');
-const elementsList =  document.querySelector('.elements__list');
-const cardCopy = document.querySelector('.cardCopy');
+const popupEdit = document.querySelector('.popup_type_edit'),
+      popupAdd = document.querySelector('.popup_type_add'),
+      popupZoom = document.querySelector('.popup_type_image'),
+      formEdit = document.forms.editForm,
+      formAdd = document.forms.addForm,
+      buttonEdit = document.querySelector('.profile__editButton'),
+      buttonAdd = document.querySelector('.profile__addButton'),
+      buttonClose = document.querySelectorAll('.popup__closeButton'),
+      usernameInput = formEdit.querySelector('.popup__input_type_username'),
+      descriptionInput = formEdit.querySelector('.popup__input_type_description'),
+      placeNameInput = formAdd.querySelector('.popup__input_type_name'),
+      linkInput = formAdd.querySelector('.popup__input_type_link'),
+      popupImage = popupZoom.querySelector('.popup__image'),
+      popupSubtitle = popupZoom.querySelector('.popup__subtitle'),
+      profileName = document.querySelector('.profile__name'),
+      profileDescription = document.querySelector('.profile__description'),
+      elementsList =  document.querySelector('.elements__list'),
+      cardCopy = document.querySelector('.cardCopy');
 
 const initialCard = [
   {
@@ -54,38 +54,40 @@ const createCard = (cardData) => {
   cardImage.alt = cardData.name;
   cardSubtitle.textContent = cardData.name;
   buttonDelete.addEventListener('click', () => { buttonDelete.closest('.card').remove() });
-  buttonLike.addEventListener('click', () => { buttonLike.classList.toggle('card__likeButton_active') });
+  buttonLike.addEventListener('click', () => { buttonLike.classList.toggle('card__likeButton_active') 
+  });
 
+const createCard = (name, link) => {
+  const card = cardCopy.content.cloneNode(true),
+        cardImage = card.querySelector('.card__image'),
+        cardSubtitle = card.querySelector('.card__subtitle'),
+        deleteButton = card.querySelector('.card__buttonDelete'),
+        likeButton = card.querySelector('.card__likeButton');
+  cardImage.src = link;
+  cardImage.alt = name;
+  cardSubtitle.textContent = name;
+  deleteButton.addEventListener('click', () => { deleteButton.closest('.card').remove() });
+  likeButton.addEventListener('click', () => { likeButton.classList.toggle('card__likeButton_active') });
   cardImage.addEventListener('click', (event) => {
                                                     popupImage.src = event.target.src;
                                                     popupImage.alt = event.target.alt;
                                                     popupSubtitle.textContent = event.target.alt;
                                                     openPopup(popupZoom);
                                                   });
-  return (card);
+  elementsList.prepend(card);
 };
 
-const renderCard = (cardData) => {
-  const card = createCard(cardData);
-  elementsList.prepend(card);
-}
-
-const handleFormEditSubmit = (event) => {
+const formEditSubmitHandler = (event) => {
   event.preventDefault();
   profileName.textContent = usernameInput.value;
   profileDescription.textContent = descriptionInput.value;
   closePopup(event);
 };
 
-const handleFormAddSubmit = (event) => {
+const formAddSubmitHandler = (event) => {
   event.preventDefault();
-  const cardData = {
-      name: placeNameInput.value,
-      link: linkInput.value
-  };
-  renderCard(cardData);
+  createCard(placeNameInput.value,linkInput.value);
   closePopup(event);
-  resetForm(event);
 };
 
 const openPopup = (namePopup) => {
@@ -94,6 +96,9 @@ const openPopup = (namePopup) => {
 
 const closePopup = (event) => {
   const openedPopup = event.target.closest('.popup');
+  try {
+    openedPopup.querySelector('.popup__form').reset();
+  } catch {};
   openedPopup.classList.remove('popup_opened');
 };
 
@@ -104,8 +109,8 @@ const resetForm = (event) => {
 
 initialCard.forEach(cardData => { renderCard(cardData) });
 
-formEdit.addEventListener('submit', handleFormEditSubmit);
-formAdd.addEventListener('submit', handleFormAddSubmit);
+formEdit.addEventListener('submit', formEditSubmitHandler);
+formAdd.addEventListener('submit', formAddSubmitHandler);
 
 buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
