@@ -17,6 +17,33 @@ const profileDescription = document.querySelector('.profile__description');
 const elementsList =  document.querySelector('.elements__list');
 const cardCopy = document.querySelector('.cardCopy');
 
+const initialCard = [
+  {
+    "name": "Карачаевск",
+    "link": "./images/card__img1.jpg"
+  },
+  {
+    "name": "Нижний Новгород",
+    "link": "./images/card__img2.jpg"
+  },
+  {
+    "name": "Санкт-Петербург",
+    "link": "./images/card__img3.jpg"
+  },
+  {
+    "name": "Кунгурская ледяная пещера",
+    "link": "./images/card__img4.jpg"
+  },
+  {
+    "name": "Маньпупунёр",
+    "link": "./images/card__img5.jpg"
+  },
+  {
+    "name": "Ленские столбы",
+    "link": "./images/card__img6.jpg"
+  }
+];
+
 const createCard = (cardData) => {
   const card = cardCopy.content.cloneNode(true);
   const cardImage = card.querySelector('.card__image');
@@ -75,13 +102,7 @@ const resetForm = (event) => {
   popup.querySelector('.popup__form').reset();
 };
 
-fetch('../data/initial-cards.json')
-.then((response) => {
-  return response.json();
-})
-.then((data) => {
-  data.forEach(cardData => { renderCard(cardData) });
-});
+initialCard.forEach(cardData => { renderCard(cardData) });
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
 formAdd.addEventListener('submit', handleFormAddSubmit);
