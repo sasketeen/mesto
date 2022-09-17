@@ -5,7 +5,7 @@ const formEdit = document.forms.editForm;
 const formAdd = document.forms.addForm;
 const buttonEdit = document.querySelector('.profile__editButton');
 const buttonAdd = document.querySelector('.profile__addButton');
-const buttonClose = document.querySelectorAll('.popup__closeButton');
+const buttonsClose = document.querySelectorAll('.popup__closeButton');
 const usernameInput = formEdit.querySelector('.popup__input_type_username');
 const descriptionInput = formEdit.querySelector('.popup__input_type_description');
 const placeNameInput = formAdd.querySelector('.popup__input_type_name');
@@ -113,4 +113,4 @@ buttonEdit.addEventListener('click', () => {
   descriptionInput.value =  profileDescription.textContent;
 });
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
-buttonClose.forEach(button => { button.addEventListener('click', closePopup) });
+buttonsClose.forEach(button => { button.addEventListener('click', closePopup) });
