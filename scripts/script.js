@@ -61,8 +61,24 @@ const handleFormAddSubmit = (event) => {
   resetForm(event);
 };
 
+const handlePopupClose = (evt) => {
+  console.log(evt);
+  const target = evt.target;
+  if (target.classList.contains('popup') || target.classList.contains('popup__closeButton')) {
+    closePopup(evt);
+    window.removeEventListener('mousedown', handlePopupClose);
+  }
+  if (evt.key == 'Escape') {
+    closePopup(evt.target);
+    evt.target.removeEventListener('mousedown', handlePopupClose);
+  }
+};
+
 const openPopup = (namePopup) => {
   namePopup.classList.add('popup_opened');
+  window.addEventListener('mousedown', handlePopupClose);
+    console.log(namePopup);
+  document.addEventListener('keydown', handlePopupClose);
 };
 
 const closePopup = (event) => {
