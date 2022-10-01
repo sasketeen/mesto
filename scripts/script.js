@@ -21,20 +21,9 @@ const createCard = (cardData) => {
   const card = cardCopy.content.cloneNode(true);
   const cardImage = card.querySelector('.card__image');
   const cardSubtitle = card.querySelector('.card__subtitle');
-  const buttonDelete = card.querySelector('.card__buttonDelete');
-  const buttonLike = card.querySelector('.card__likeButton');
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   cardSubtitle.textContent = cardData.name;
-  buttonDelete.addEventListener('click', () => { buttonDelete.closest('.card').remove() });
-  buttonLike.addEventListener('click', () => { buttonLike.classList.toggle('card__likeButton_active') });
-
-  cardImage.addEventListener('click', (event) => {
-                                                    popupImage.src = event.target.src;
-                                                    popupImage.alt = event.target.alt;
-                                                    popupSubtitle.textContent = event.target.alt;
-                                                    openPopup(popupZoom);
-                                                  });
   return (card);
 };
 
@@ -61,10 +50,9 @@ const handleFormAddSubmit = (event) => {
   resetForm(event);
 };
 
-const closePopupByClick = (event) => {
-  const target = event.target;
+const closePopupByClick = ({ target }) => {
   if (target.classList.contains('popup') || target.classList.contains('popup__closeButton')) {
-    closePopup(event.target.closest('.popup'));
+    closePopup(target.closest('.popup'));
     window.removeEventListener('mousedown', closePopupByKey);
     document.removeEventListener('keydown', closePopupByKey);
   }
@@ -86,7 +74,6 @@ const openPopup = (namePopup) => {
 };
 
 const closePopup = (namePopup) => {
-  // const openedPopup = event.target.closest('.popup');
   namePopup.classList.remove('popup_opened');
 };
 
@@ -106,4 +93,18 @@ buttonEdit.addEventListener('click', () => {
   descriptionInput.value =  profileDescription.textContent;
 });
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
-// buttonsClose.forEach(button => { button.addEventListener('click', closePopup) });
+
+elementsList.addEventListener('click', ({ target }) => {
+  if (target.classList.contains('card__buttonDelete')) {
+    target.closest('.card').remove();
+  }
+  if (target.classList.contains('card__likeButton')) {
+    target.classList.toggle('card__likeButton_active');
+  }
+  if (target.classList.contains('card__image')) {
+    popupImage.src = target.src;
+    popupImage.alt = target.alt;
+    popupSubtitle.textContent = target.alt;
+    openPopup(popupZoom);
+  }
+})
