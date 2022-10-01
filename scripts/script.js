@@ -47,7 +47,7 @@ const handleFormEditSubmit = (event) => {
   event.preventDefault();
   profileName.textContent = usernameInput.value;
   profileDescription.textContent = descriptionInput.value;
-  closePopup(event);
+  closePopup(event.target.closest('.popup'));
 };
 
 const handleFormAddSubmit = (event) => {
@@ -57,33 +57,37 @@ const handleFormAddSubmit = (event) => {
       link: linkInput.value
   };
   renderCard(cardData);
-  closePopup(event);
+  closePopup(event.target.closest('.popup'));
   resetForm(event);
 };
 
-const handlePopupClose = (evt) => {
-  console.log(evt);
-  const target = evt.target;
+const closePopupByClick = (event) => {
+  const target = event.target;
   if (target.classList.contains('popup') || target.classList.contains('popup__closeButton')) {
-    closePopup(evt);
-    window.removeEventListener('mousedown', handlePopupClose);
-  }
-  if (evt.key == 'Escape') {
-    closePopup(evt.target);
-    evt.target.removeEventListener('mousedown', handlePopupClose);
+    closePopup(event.target.closest('.popup'));
+    window.removeEventListener('mousedown', closePopupByKey);
+    document.removeEventListener('keydown', closePopupByKey);
   }
 };
+
+const closePopupByKey = (event) => {
+  if (event.key === 'Escape') {
+    openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+    window.removeEventListener('mousedown', closePopupByKey);
+    document.removeEventListener('keydown', closePopupByKey);
+  }
+}
 
 const openPopup = (namePopup) => {
   namePopup.classList.add('popup_opened');
-  window.addEventListener('mousedown', handlePopupClose);
-    console.log(namePopup);
-  document.addEventListener('keydown', handlePopupClose);
+  window.addEventListener('mousedown', closePopupByClick);
+  document.addEventListener('keydown', closePopupByKey);
 };
 
-const closePopup = (event) => {
-  const openedPopup = event.target.closest('.popup');
-  openedPopup.classList.remove('popup_opened');
+const closePopup = (namePopup) => {
+  // const openedPopup = event.target.closest('.popup');
+  namePopup.classList.remove('popup_opened');
 };
 
 const resetForm = (event) => {
@@ -102,4 +106,4 @@ buttonEdit.addEventListener('click', () => {
   descriptionInput.value =  profileDescription.textContent;
 });
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
-buttonsClose.forEach(button => { button.addEventListener('click', closePopup) });
+// buttonsClose.forEach(button => { button.addEventListener('click', closePopup) });
