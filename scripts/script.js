@@ -108,3 +108,5 @@ elementsList.addEventListener('click', ({ target }) => {
     openPopup(popupZoom);
   }
 })
+
+console.log (Array.from(document.forms));
