@@ -38,7 +38,7 @@
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
       <button class="button popup__closeButton" type="button" name="close"></button>
-      <form action="#" method="post" name="editForm" class="popup__form">
+      <form action="#" method="post" name="editForm" class="popup__form" novalidate>
         <input type="text" class="popup__input popup__input_type_username" id="usernameInput" name="username" minlength="2" maxlength="40" required>
         <span class="popup__error usernameInput-error"></span>
         <input type="text" class="popup__input popup__input_type_description" id="descriptionInput" name="description" minlength="2" maxlength="200"  required>
@@ -52,11 +52,11 @@
     <div class="popup__container">
       <h2 class="popup__title">Новое место</h2>
       <button class="button popup__closeButton" type="button" name="close"></button>
-      <form action="#" method="post" name="addForm" class="popup__form">
+      <form action="#" method="post" name="addForm" class="popup__form" novalidate>
         <input type="text" class="popup__input popup__input_type_name" id="nameInput" name="name" placeholder="Название" minlength="2" maxlength="30" required>
-        <span class="popup__error nameInput-error popup__error_active"></span>
+        <span class="popup__error nameInput-error"></span>
         <input type="url" class="popup__input popup__input_type_link" id="linkInput" name="link" placeholder="Ссылка на картинку" required>
-        <span class="popup__error linkInput-error popup__error_active"></span>
+        <span class="popup__error linkInput-error"></span>
         <button type="submit" class="button popup__saveButton">Создать</button>
       </form>
     </div>
@@ -83,7 +83,8 @@
     </li>
   </template>
 
-  <script src="scripts/initial-cards.js"></script>
-  <script src="scripts/script.js"></script>
+  <script src="./scripts/initial-cards.js"></script>
+  <script src="./scripts/script.js"></script>
+  <script src="./scripts/validation.js"></script>
 </body>
 </html>

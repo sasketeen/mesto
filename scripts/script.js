@@ -60,7 +60,7 @@ const closePopupByClick = ({ target }) => {
 
 const closePopupByKey = (event) => {
   if (event.key === 'Escape') {
-    openedPopup = document.querySelector('.popup_opened');
+    const openedPopup = document.querySelector('.popup_opened');
     closePopup(openedPopup);
     window.removeEventListener('mousedown', closePopupByKey);
     document.removeEventListener('keydown', closePopupByKey);
@@ -92,21 +92,20 @@ buttonEdit.addEventListener('click', () => {
   usernameInput.value = profileName.textContent;
   descriptionInput.value =  profileDescription.textContent;
 });
+
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
 
 elementsList.addEventListener('click', ({ target }) => {
   if (target.classList.contains('card__buttonDelete')) {
     target.closest('.card').remove();
-  }
+  };
   if (target.classList.contains('card__likeButton')) {
     target.classList.toggle('card__likeButton_active');
-  }
+  };
   if (target.classList.contains('card__image')) {
     popupImage.src = target.src;
     popupImage.alt = target.alt;
     popupSubtitle.textContent = target.alt;
     openPopup(popupZoom);
-  }
-})
-
-console.log (Array.from(document.forms));
+  };
+});
