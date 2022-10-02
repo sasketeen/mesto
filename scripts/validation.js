@@ -42,8 +42,7 @@ const hideError = (span, input, {inputErrorClass, errorClass}) => {
 
 const toggleButtonSubmit = (inputs, button, disabledButtonClass) => {
   if (hasInvalidInput(inputs)) {
-    button.classList.add(disabledButtonClass);
-    button.setAttribute('disabled', true);
+    disableButton(button, disabledButtonClass);
   }
   else {
     button.classList.remove(disabledButtonClass);
@@ -52,14 +51,9 @@ const toggleButtonSubmit = (inputs, button, disabledButtonClass) => {
 };
 
 const hasInvalidInput = (inputs) => {
-
   return inputs.some((input) => {
     return !input.validity.valid
   })
 };
 
-enableValidation({inputSelector: '.popup__input',
-                  submitButtonSelector: '.popup__saveButton',
-                  disabledButtonClass: 'popup_saveButton_disabled',
-                  inputErrorClass: 'popup__input_type_error',
-                  errorClass:'popup__error_active'})
+enableValidation(selectors);

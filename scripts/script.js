@@ -16,6 +16,11 @@ const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 const elementsList =  document.querySelector('.elements__list');
 const cardCopy = document.querySelector('.cardCopy');
+const selectors = {inputSelector: '.popup__input',
+                   submitButtonSelector: '.popup__saveButton',
+                   disabledButtonClass: 'popup_saveButton_disabled',
+                   inputErrorClass: 'popup__input_type_error',
+                   errorClass:'popup__error_active'};
 
 const createCard = (cardData) => {
   const card = cardCopy.content.cloneNode(true);
@@ -45,9 +50,11 @@ const handleFormAddSubmit = (event) => {
       name: placeNameInput.value,
       link: linkInput.value
   };
+  const button = event.target.querySelector('.popup__saveButton');
   renderCard(cardData);
   closePopup(event.target.closest('.popup'));
   resetForm(event);
+  disableButton(button, selectors.disabledButtonClass);
 };
 
 const closePopupByClick = ({ target }) => {
@@ -82,6 +89,10 @@ const resetForm = (event) => {
   popup.querySelector('.popup__form').reset();
 };
 
+const disableButton = (button, disabledButtonClass) => {
+  button.classList.add(disabledButtonClass);
+  button.setAttribute('disabled', true);
+};
 initialCard.forEach(cardData => { renderCard(cardData) });
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
