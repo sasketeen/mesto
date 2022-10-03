@@ -7,7 +7,6 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
+  margin-bottom: 5px;
 }
-.popup__input:not(:last-of-type) {
-  margin-bottom: 30px;
-}
+

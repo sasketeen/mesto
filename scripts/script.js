@@ -16,6 +16,11 @@ const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 const elementsList =  document.querySelector('.elements__list');
 const cardCopy = document.querySelector('.cardCopy');
+const selectors = {inputSelector: '.popup__input',
+                   submitButtonSelector: '.popup__saveButton',
+                   disabledButtonClass: 'popup_saveButton_disabled',
+                   inputErrorClass: 'popup__input_type_error',
+                   errorClass:'popup__error_active'};
 
 const createCard = (cardData) => {
   const card = cardCopy.content.cloneNode(true);
@@ -25,7 +30,7 @@ const createCard = (cardData) => {
   cardImage.alt = cardData.name;
   cardSubtitle.textContent = cardData.name;
   return (card);
-};
+}
 
 const renderCard = (cardData) => {
   const card = createCard(cardData);
@@ -37,32 +42,33 @@ const handleFormEditSubmit = (event) => {
   profileName.textContent = usernameInput.value;
   profileDescription.textContent = descriptionInput.value;
   closePopup(event.target.closest('.popup'));
-};
+}
 
 const handleFormAddSubmit = (event) => {
   event.preventDefault();
   const cardData = {
       name: placeNameInput.value,
       link: linkInput.value
-  };
+  }
+  const button = event.target.querySelector('.popup__saveButton');
   renderCard(cardData);
   closePopup(event.target.closest('.popup'));
-  resetForm(event);
-};
+  disableButton(button, selectors.disabledButtonClass);
+}
 
 const closePopupByClick = ({ target }) => {
   if (target.classList.contains('popup') || target.classList.contains('popup__closeButton')) {
     closePopup(target.closest('.popup'));
-    window.removeEventListener('mousedown', closePopupByKey);
+    window.removeEventListener('mousedown', closePopupByClick);
     document.removeEventListener('keydown', closePopupByKey);
   }
 };
 
 const closePopupByKey = (event) => {
   if (event.key === 'Escape') {
-    openedPopup = document.querySelector('.popup_opened');
+    const openedPopup = document.querySelector('.popup_opened');
     closePopup(openedPopup);
-    window.removeEventListener('mousedown', closePopupByKey);
+    window.removeEventListener('mousedown', closePopupByClick);
     document.removeEventListener('keydown', closePopupByKey);
   }
 }
@@ -71,17 +77,26 @@ const openPopup = (namePopup) => {
   namePopup.classList.add('popup_opened');
   window.addEventListener('mousedown', closePopupByClick);
   document.addEventListener('keydown', closePopupByKey);
-};
+}
 
-const closePopup = (namePopup) => {
-  namePopup.classList.remove('popup_opened');
-};
+const closePopup = (popup) => {
+  popup.classList.remove('popup_opened');
+  resetForm(popup);
+}
 
-const resetForm = (event) => {
-  const popup = event.target.closest('.popup');
+const resetForm = (popup) => {
   popup.querySelector('.popup__form').reset();
-};
+  const inputs = Array.from(popup.querySelectorAll('.popup__input'));
+  inputs.forEach((input) => {
+    const errorSpan = popup.querySelector(`.${input.id}-error`);
+    hideError(errorSpan, input, selectors);
+  })
+}
 
+const disableButton = (button, disabledButtonClass) => {
+  button.classList.add(disabledButtonClass);
+  button.setAttribute('disabled', true);
+}
 initialCard.forEach(cardData => { renderCard(cardData) });
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
@@ -91,7 +106,8 @@ buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
   usernameInput.value = profileName.textContent;
   descriptionInput.value =  profileDescription.textContent;
-});
+})
+
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
 
 elementsList.addEventListener('click', ({ target }) => {
