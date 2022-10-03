@@ -38,10 +38,12 @@ const renderCard = (cardData) => {
 }
 
 const handleFormEditSubmit = (event) => {
+  const popup = event.target.closest('.popup');
   event.preventDefault();
   profileName.textContent = usernameInput.value;
   profileDescription.textContent = descriptionInput.value;
-  closePopup(event.target.closest('.popup'));
+  closePopup(popup);
+  resetForm(popup);
 }
 
 const handleFormAddSubmit = (event) => {
@@ -51,8 +53,10 @@ const handleFormAddSubmit = (event) => {
       link: linkInput.value
   }
   const button = event.target.querySelector('.popup__saveButton');
+  const popup = event.target.closest('.popup');
   renderCard(cardData);
-  closePopup(event.target.closest('.popup'));
+  closePopup(popup);
+  resetForm(popup);
   disableButton(button, selectors.disabledButtonClass);
 }
 
@@ -81,12 +85,11 @@ const openPopup = (namePopup) => {
 
 const closePopup = (popup) => {
   popup.classList.remove('popup_opened');
-  resetForm(popup);
 }
 
 const resetForm = (popup) => {
-  popup.querySelector('.popup__form').reset();
   const inputs = Array.from(popup.querySelectorAll('.popup__input'));
+  popup.querySelector('.popup__form').reset();
   inputs.forEach((input) => {
     const errorSpan = popup.querySelector(`.${input.id}-error`);
     hideError(errorSpan, input, selectors);
