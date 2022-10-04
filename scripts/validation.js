@@ -40,6 +40,15 @@ const hideError = (span, input, {inputErrorClass, errorClass}) => {
   input.classList.remove(inputErrorClass);
 }
 
+const resetErrors = (form, button, {inputSelector, disabledButtonClass, ...restSelectors}) => {
+  const inputs = Array.from(form.querySelectorAll(inputSelector));
+  inputs.forEach((input) => {
+    const errorSpan = form.querySelector(`.${input.id}-error`);
+    hideError(errorSpan, input, restSelectors);
+  })
+  toggleButtonSubmit(inputs, button, disabledButtonClass);
+}
+
 const toggleButtonSubmit = (inputs, button, disabledButtonClass) => {
   if (hasInvalidInput(inputs)) {
     disableButton(button, disabledButtonClass);
@@ -56,4 +65,9 @@ const hasInvalidInput = (inputs) => {
   })
 }
 
-enableValidation(selectors);
+const disableButton = (button, disabledButtonClass) => {
+  button.classList.add(disabledButtonClass);
+  button.setAttribute('disabled', true);
+}
+
+enableValidation(formSelectors);
