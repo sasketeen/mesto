@@ -19,7 +19,6 @@ const buttonAdd = document.querySelector('.profile__addButton');
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 const elementsList =  document.querySelector('.elements__list');
-const cardCopy = document.querySelector('.cardCopy');
 const formSelectors = {
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__saveButton',
@@ -28,28 +27,7 @@ const formSelectors = {
   errorClass:'popup__error_active'
 };
 
-const createCard = (cardData) => {
-  const card = cardCopy.content.cloneNode(true);
-  const cardImage = card.querySelector('.card__image');
-  const cardSubtitle = card.querySelector('.card__subtitle');
-  const buttonDelete = card.querySelector('.card__buttonDelete');
-  const buttonLike = card.querySelector('.card__likeButton');
-  cardImage.src = cardData.link;
-  cardImage.alt = cardData.name;
-  cardSubtitle.textContent = cardData.name;
-  buttonDelete.addEventListener('click', () => { buttonDelete.closest('.card').remove() });
-  buttonLike.addEventListener('click', () => { buttonLike.classList.toggle('card__likeButton_active') });
-  cardImage.addEventListener('click', (event) => {
-    popupImage.src = event.target.src;
-    popupImage.alt = event.target.alt;
-    popupSubtitle.textContent = event.target.alt;
-    openPopup(popupZoom);
-  });
-  return (card);
-}
-
-const renderCard = (cardData, container) => {
-  const card = createCard(cardData);
+const renderCard = (card, container) => {
   container.prepend(card);
 }
 
@@ -67,7 +45,8 @@ const handleFormAddSubmit = (event) => {
       name: placeNameInput.value,
       link: linkInput.value
   }
-  renderCard(cardData, elementsList);
+  const card = new Card(cardData, '.cardCopy');
+  renderCard(card.makeCard(), elementsList);
   closePopup(popupAdd);
   resetForm(popupAdd);
   disableButton(saveButtonPopupAdd, formSelectors.disabledButtonClass);
@@ -102,7 +81,10 @@ const resetForm = (popup) => {
   popup.querySelector('.popup__form').reset();
 }
 
-initialCard.forEach(cardData => { renderCard(cardData, elementsList) });
+initialCard.forEach( cardData => {
+  const card = new Card(cardData, '.cardCopy');
+  renderCard(card.makeCard(), elementsList);
+});
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
 formAdd.addEventListener('submit', handleFormAddSubmit);
