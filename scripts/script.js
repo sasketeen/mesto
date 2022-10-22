@@ -81,11 +81,13 @@ const resetForm = (popup) => {
   popup.querySelector('.popup__form').reset();
 }
 
+// добавление начальных карточек
 initialCard.forEach( cardData => {
   const card = new Card(cardData, '.cardCopy');
   renderCard(card.makeCard(), elementsList);
 });
 
+// дбавление слушателей
 formEdit.addEventListener('submit', handleFormEditSubmit);
 formAdd.addEventListener('submit', handleFormAddSubmit);
 

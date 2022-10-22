@@ -30,11 +30,14 @@ class Card {
 
     buttonDelete.addEventListener('click', () => { buttonDelete.closest('.card').remove() });
     buttonLike.addEventListener('click', () => { buttonLike.classList.toggle('card__likeButton_active') });
-    this._cardImage.addEventListener('click', () => {
-      popupImage.src = this._cardImage.src;
-      popupImage.alt = this._cardImage.alt;
-      popupSubtitle.textContent = this._cardImage.alt;
-      openPopup(popupZoom);
-    });
+    this._cardImage.addEventListener('click', () => { this._handleImageClick() });
+  }
+
+  // функция обработки клика по фото
+  _handleImageClick() {
+    popupImage.src = this._cardImage.src;
+    popupImage.alt = this._cardImage.alt;
+    popupSubtitle.textContent = this._cardImage.alt;
+    openPopup(popupZoom);
   }
 }
