@@ -70,4 +70,4 @@ const disableButton = (button, disabledButtonClass) => {
   button.setAttribute('disabled', true);
 }
 
-enableValidation(formSelectors);
+// enableValidation(formSelectors);

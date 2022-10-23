@@ -87,7 +87,13 @@ initialCard.forEach( cardData => {
   renderCard(card.makeCard(), elementsList);
 });
 
-// дбавление слушателей
+// добавление валидации
+Array.from(document.forms).forEach(form => {
+  const validator = new FormValidator(formSelectors, form);
+  validator.enableValidation();
+});
+
+// добавление слушателей
 formEdit.addEventListener('submit', handleFormEditSubmit);
 formAdd.addEventListener('submit', handleFormAddSubmit);
 
@@ -95,7 +101,8 @@ buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
   usernameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
-  resetErrors(formEdit, saveButtonPopupEdit, formSelectors);
+
+  // resetErrors(formEdit, saveButtonPopupEdit, formSelectors);
 })
 
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
