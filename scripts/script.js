@@ -1,4 +1,7 @@
 import FormValidator from './formValidator.js'
+import Card from './card.js';
+import {initialCard} from './initial-cards.js';
+
 
 const popupEdit = document.querySelector('.popup_type_edit');
 // const formEdit = document.forms.editForm;
@@ -13,8 +16,13 @@ const linkInput = document.querySelector('.popup__input_type_link');
 const saveButtonPopupAdd = popupAdd.querySelector('.popup__saveButton');
 
 const popupZoom = document.querySelector('.popup_type_image');
-const popupImage = popupZoom.querySelector('.popup__image');
-const popupSubtitle = popupZoom.querySelector('.popup__subtitle');
+const popupData = {
+  popup: popupZoom,
+  popupImage: popupZoom.querySelector('.popup__image'),
+  popupSubtitle: popupZoom.querySelector('.popup__subtitle'),
+  openPopupFunction: openPopup
+}
+
 
 const buttonEdit = document.querySelector('.profile__editButton');
 const buttonAdd = document.querySelector('.profile__addButton');
@@ -47,7 +55,7 @@ const handleFormAddSubmit = (event) => {
       name: placeNameInput.value,
       link: linkInput.value
   }
-  const card = new Card(cardData, '.cardCopy');
+  const card = new Card(cardData, '.cardCopy', popupData);
   renderCard(card.makeCard(), elementsList);
   closePopup(popupAdd);
   resetForm(popupAdd);
@@ -67,7 +75,7 @@ const closePopupByKey = (event) => {
   }
 }
 
-const openPopup = (namePopup) => {
+function openPopup(namePopup) {
   namePopup.classList.add('popup_opened');
   window.addEventListener('mousedown', closePopupByClick);
   document.addEventListener('keydown', closePopupByKey);
@@ -85,7 +93,7 @@ const resetForm = (popup) => {
 
 // добавление начальных карточек
 initialCard.forEach( cardData => {
-  const card = new Card(cardData, '.cardCopy');
+  const card = new Card(cardData, '.cardCopy', popupData);
   renderCard(card.makeCard(), elementsList);
 });
 
