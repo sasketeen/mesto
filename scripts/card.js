@@ -1,7 +1,8 @@
-class Card {
-  constructor (cardData, templateSelector) {
+export default class Card {
+  constructor (cardData, templateSelector, popupData) {
     this._cardData = cardData;
     this._templateSelector = templateSelector;
+    this._popupData = popupData;
   }
 
   //  функция настройки и заполнения карочи данными. Возвращает готовую карточку
@@ -35,9 +36,10 @@ class Card {
 
   // функция обработки клика по фото
   _handleImageClick() {
-    popupImage.src = this._cardImage.src;
-    popupImage.alt = this._cardImage.alt;
-    popupSubtitle.textContent = this._cardImage.alt;
-    openPopup(popupZoom);
+    this._popupData.popupImage.src = this._cardImage.src;
+    this._popupData.popupImage.alt = this._cardImage.alt;
+    this._popupData.popupSubtitle.textContent = this._cardImage.alt;
+    this._popupData.openPopupFunction(this._popupData.popup);
   }
 }
+
