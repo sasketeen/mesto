@@ -1,11 +1,13 @@
+import FormValidator from './formValidator.js'
+
 const popupEdit = document.querySelector('.popup_type_edit');
-const formEdit = document.forms.editForm;
+// const formEdit = document.forms.editForm;
 const usernameInput = document.querySelector('.popup__input_type_username');
 const descriptionInput = document.querySelector('.popup__input_type_description');
 const saveButtonPopupEdit = popupEdit.querySelector('.popup__saveButton');
 
 const popupAdd = document.querySelector('.popup_type_add');
-const formAdd = document.forms.addForm;
+// const formAdd = document.forms.addForm;
 const placeNameInput = document.querySelector('.popup__input_type_name');
 const linkInput = document.querySelector('.popup__input_type_link');
 const saveButtonPopupAdd = popupAdd.querySelector('.popup__saveButton');
@@ -88,21 +90,31 @@ initialCard.forEach( cardData => {
 });
 
 // добавление валидации
+const getFormObj = (selector) => {
+  const form = document.querySelector(selector);
+  return {
+    element: form,
+    validator: new FormValidator(formSelectors, form)
+  }
+}
+const formAdd = getFormObj('.addForm');
+const formEdit = getFormObj('.editForm');
+
 Array.from(document.forms).forEach(form => {
   const validator = new FormValidator(formSelectors, form);
   validator.enableValidation();
 });
 
 // добавление слушателей
-formEdit.addEventListener('submit', handleFormEditSubmit);
-formAdd.addEventListener('submit', handleFormAddSubmit);
+formEdit.element.addEventListener('submit', handleFormEditSubmit);
+formAdd.element.addEventListener('submit', handleFormAddSubmit);
 
 buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
   usernameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
 
-  // resetErrors(formEdit, saveButtonPopupEdit, formSelectors);
+  formEdit.validator.resetErrors(formEdit, saveButtonPopupEdit, formSelectors);
 })
 
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
