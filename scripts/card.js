@@ -5,7 +5,7 @@ export default class Card {
     this._popupData = popupData;
   }
 
-  //  функция настройки и заполнения карочи данными. Возвращает готовую карточку
+  // функция настройки и заполнения карточки данными. Возвращает готовую карточку
   makeCard() {
     this._card = this._getTemplate();
     this._cardImage = this._card.querySelector('.card__image');
