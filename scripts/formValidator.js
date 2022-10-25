@@ -66,9 +66,9 @@ export default class FormValidator {
 
   resetErrors = ({inputSelector, disabledButtonClass, ...restSelectors}) => {
     this._inputs.forEach((input) => {
-      const errorSpan = form.querySelector(`.${input.id}-error`);
-      hideError(errorSpan, input, restSelectors);
+      const errorSpan = this._form.querySelector(`.${input.id}-error`);
+      this._hideError(errorSpan, input, restSelectors);
     })
-    this._toggleButtonSubmit(this._inputs, this._button, disabledButtonClass);
+    this._toggleButtonSubmit(disabledButtonClass);
   }
 }
