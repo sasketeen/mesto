@@ -4,13 +4,11 @@ import {initialCard} from './initial-cards.js';
 
 
 const popupEdit = document.querySelector('.popup_type_edit');
-// const formEdit = document.forms.editForm;
 const usernameInput = document.querySelector('.popup__input_type_username');
 const descriptionInput = document.querySelector('.popup__input_type_description');
 const saveButtonPopupEdit = popupEdit.querySelector('.popup__saveButton');
 
 const popupAdd = document.querySelector('.popup_type_add');
-// const formAdd = document.forms.addForm;
 const placeNameInput = document.querySelector('.popup__input_type_name');
 const linkInput = document.querySelector('.popup__input_type_link');
 const saveButtonPopupAdd = popupAdd.querySelector('.popup__saveButton');
@@ -22,7 +20,6 @@ const popupData = {
   popupSubtitle: popupZoom.querySelector('.popup__subtitle'),
   openPopupFunction: openPopup
 }
-
 
 const buttonEdit = document.querySelector('.profile__editButton');
 const buttonAdd = document.querySelector('.profile__addButton');
@@ -98,6 +95,8 @@ initialCard.forEach( cardData => {
 });
 
 // добавление валидации
+
+  //функция возвращает объект формы с экземпляром класса валидации
 const getFormObj = (selector) => {
   const form = document.querySelector(selector);
   return {
@@ -107,11 +106,8 @@ const getFormObj = (selector) => {
 }
 const formAdd = getFormObj('.addForm');
 const formEdit = getFormObj('.editForm');
-
-Array.from(document.forms).forEach(form => {
-  const validator = new FormValidator(formSelectors, form);
-  validator.enableValidation();
-});
+formAdd.validator.enableValidation();
+formEdit.validator.enableValidation();
 
 // добавление слушателей
 formEdit.element.addEventListener('submit', handleFormEditSubmit);
@@ -122,7 +118,7 @@ buttonEdit.addEventListener('click', () => {
   usernameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
 
-  formEdit.validator.resetErrors(formEdit, saveButtonPopupEdit, formSelectors);
+  formEdit.validator.resetErrors(formSelectors);
 })
 
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
