@@ -7,7 +7,7 @@ export default class Card {
 
   // функция настройки и заполнения карточки данными. Возвращает готовую карточку
   makeCard() {
-    this._card = this._getTemplate();
+    this._card = this._getTemplate().querySelector('.card');
     this._cardImage = this._card.querySelector('.card__image');
     const cardSubtitle = this._card.querySelector('.card__subtitle');
     this._cardImage.src = this._cardData.link;
@@ -19,21 +19,28 @@ export default class Card {
 
   // функция поиска и копирвания шаблона карточки. Возвращает пустой шаблон карточки
   _getTemplate() {
-    return (
-      document.querySelector(this._templateSelector).content.cloneNode(true)
-    );
+    return document.querySelector(this._templateSelector).content.cloneNode(true)
   }
 
   // функция установки слушателей на кнопки в карточке
   _setEventListeners() {
     const buttonDelete = this._card.querySelector('.card__buttonDelete');
-    const buttonLike = this._card.querySelector('.card__likeButton');
+    this._buttonLike = this._card.querySelector('.card__likeButton');
 
-    buttonDelete.addEventListener('click', () => { buttonDelete.closest('.card').remove() });
-    buttonLike.addEventListener('click', () => { buttonLike.classList.toggle('card__likeButton_active') });
+    buttonDelete.addEventListener('click', () => { this._handleDeleteClick() });
+    this._buttonLike.addEventListener('click', () => { this._handleLikeClick() });
     this._cardImage.addEventListener('click', () => { this._handleImageClick() });
   }
 
+  // функция обработки клика по кнопке удаления
+  _handleDeleteClick() {
+    this._card.remove();
+  }
+
+  // функция обработки клика по кнопке лайка
+  _handleLikeClick() {
+    this._buttonLike.classList.toggle('card__likeButton_active')
+  }
   // функция обработки клика по фото
   _handleImageClick() {
     this._popupData.popupImage.src = this._cardImage.src;
