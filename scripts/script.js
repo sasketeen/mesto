@@ -1,6 +1,6 @@
 import FormValidator from './formValidator.js'
 import Card from './card.js';
-import {initialCard} from './initial-cards.js';
+import {initialCards} from './initial-cards.js';
 
 const page = document.querySelector('.page');
 const popupEdit = document.querySelector('.popup_type_edit');
@@ -34,6 +34,17 @@ const formSelectors = {
   errorClass:'popup__error_active'
 };
 
+//функция возвращает объект формы с экземпляром класса валидации
+const getFormObj = (selector) => {
+  const form = document.querySelector(selector);
+  return {
+    element: form,
+    validator: new FormValidator(formSelectors, form)
+  }
+}
+const formAdd = getFormObj('.addForm');
+const formEdit = getFormObj('.editForm');
+
 const renderCard = (card, container) => {
   container.prepend(card);
 }
@@ -43,7 +54,7 @@ const handleFormEditSubmit = (event) => {
   profileName.textContent = usernameInput.value;
   profileDescription.textContent = descriptionInput.value;
   closePopup(popupEdit);
-  resetForm(popupEdit);
+  resetForm(formEdit);
 }
 
 const handleFormAddSubmit = (event) => {
@@ -53,9 +64,10 @@ const handleFormAddSubmit = (event) => {
       link: linkInput.value
   }
   const card = new Card(cardData, '.cardCopy', popupData);
+
   renderCard(card.makeCard(), elementsList);
   closePopup(popupAdd);
-  resetForm(popupAdd);
+  resetForm(formAdd);
   disableButton(saveButtonPopupAdd, formSelectors.disabledButtonClass);
 }
 
@@ -86,28 +98,18 @@ const closePopup = (popup) => {
   page.classList.remove('page_type_openedPopup');
 }
 
-const resetForm = (popup) => {
-  popup.querySelector('.popup__form').reset();
+const resetForm = (form) => {
+  form.element.reset();
 }
 
 // добавление начальных карточек
-initialCard.forEach( cardData => {
+initialCards.forEach( cardData => {
   const card = new Card(cardData, '.cardCopy', popupData);
   renderCard(card.makeCard(), elementsList);
 });
 
 // добавление валидации
 
-  //функция возвращает объект формы с экземпляром класса валидации
-const getFormObj = (selector) => {
-  const form = document.querySelector(selector);
-  return {
-    element: form,
-    validator: new FormValidator(formSelectors, form)
-  }
-}
-const formAdd = getFormObj('.addForm');
-const formEdit = getFormObj('.editForm');
 formAdd.validator.enableValidation();
 formEdit.validator.enableValidation();
 
@@ -119,7 +121,6 @@ buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
   usernameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
-
   formEdit.validator.resetErrors(formSelectors);
 })
 
