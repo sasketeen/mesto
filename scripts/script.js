@@ -6,12 +6,10 @@ import {initialCard} from './initial-cards.js';
 const popupEdit = document.querySelector('.popup_type_edit');
 const usernameInput = document.querySelector('.popup__input_type_username');
 const descriptionInput = document.querySelector('.popup__input_type_description');
-const saveButtonPopupEdit = popupEdit.querySelector('.popup__saveButton');
 
 const popupAdd = document.querySelector('.popup_type_add');
 const placeNameInput = document.querySelector('.popup__input_type_name');
 const linkInput = document.querySelector('.popup__input_type_link');
-const saveButtonPopupAdd = popupAdd.querySelector('.popup__saveButton');
 
 const popupZoom = document.querySelector('.popup_type_image');
 const popupData = {
@@ -56,7 +54,7 @@ const handleFormAddSubmit = (event) => {
   renderCard(card.makeCard(), elementsList);
   closePopup(popupAdd);
   resetForm(popupAdd);
-  disableButton(saveButtonPopupAdd, formSelectors.disabledButtonClass);
+  formAdd.validator.disableButton();
 }
 
 const closePopupByClick = ({ target }) => {
@@ -117,8 +115,7 @@ buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
   usernameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
-
-  formEdit.validator.resetErrors(formSelectors);
+  formEdit.validator.resetErrors();
 })
 
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
