@@ -1,13 +1,13 @@
 export default class Card {
-  constructor (cardData, templateSelector, popupData) {
+  constructor (cardData, templateSelector, handleOpenImagePopup) {
     this._cardData = cardData;
     this._templateSelector = templateSelector;
-    this._popupData = popupData;
+    this._handleOpenImagePopup = handleOpenImagePopup;
   }
 
   // функция настройки и заполнения карточки данными. Возвращает готовую карточку
   makeCard() {
-    this._card = this._getTemplate().querySelector('.card');
+    this._card = this._getTemplate();
     this._cardImage = this._card.querySelector('.card__image');
     const cardSubtitle = this._card.querySelector('.card__subtitle');
     this._cardImage.src = this._cardData.link;
@@ -19,7 +19,7 @@ export default class Card {
 
   // функция поиска и копирвания шаблона карточки. Возвращает пустой шаблон карточки
   _getTemplate() {
-    return document.querySelector(this._templateSelector).content.cloneNode(true)
+    return document.querySelector(this._templateSelector).content.querySelector('.card').cloneNode(true)
   }
 
   // функция установки слушателей на кнопки в карточке
@@ -43,10 +43,7 @@ export default class Card {
   }
   // функция обработки клика по фото
   _handleImageClick() {
-    this._popupData.popupImage.src = this._cardImage.src;
-    this._popupData.popupImage.alt = this._cardImage.alt;
-    this._popupData.popupSubtitle.textContent = this._cardImage.alt;
-    this._popupData.openPopupFunction(this._popupData.popup);
+    this._handleOpenImagePopup( {link: this._cardData.link, name: this._cardData.name} );
   }
 }
 
