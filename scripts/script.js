@@ -12,12 +12,9 @@ const placeNameInput = document.querySelector('.popup__input_type_name');
 const linkInput = document.querySelector('.popup__input_type_link');
 
 const popupZoom = document.querySelector('.popup_type_image');
-const popupData = {
-  popup: popupZoom,
-  popupImage: popupZoom.querySelector('.popup__image'),
-  popupSubtitle: popupZoom.querySelector('.popup__subtitle'),
-  openPopupFunction: openPopup
-}
+const popupImage = popupZoom.querySelector('.popup__image');
+const popupSubtitle = popupZoom.querySelector('.popup__subtitle');
+
 
 const buttonEdit = document.querySelector('.profile__editButton');
 const buttonAdd = document.querySelector('.profile__addButton');
@@ -61,13 +58,20 @@ const handleFormAddSubmit = (event) => {
       name: placeNameInput.value,
       link: linkInput.value
   }
-  const card = new Card(cardData, '.cardCopy', popupData);
 
+  const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
   renderCard(card.makeCard(), elementsList);
   closePopup(popupAdd);
   resetForm(formAdd);
   formAdd.validator.disableButton();
 
+}
+
+const handleOpenImagePopup = (imageData) => {
+  popupImage.src = imageData.link;
+  popupImage.alt = imageData.name;
+  popupSubtitle.textContent = imageData.name;
+  openPopup(popupZoom);
 }
 
 const closePopupByClick = ({ target }) => {
@@ -102,8 +106,8 @@ const resetForm = (form) => {
 }
 
 // добавление начальных карточек
-initialCards.forEach( cardData => {
-  const card = new Card(cardData, '.cardCopy', popupData);
+initialCard.forEach( cardData => {
+  const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
   renderCard(card.makeCard(), elementsList);
 });
 
