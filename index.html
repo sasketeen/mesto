@@ -18,11 +18,11 @@
         <img src="./images/profile__avatar.png" alt="Аватар пользователя" class="profile__avatar">
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
-          <button class="button profile__editButton" type="button" name="edit"></button>
+          <button class="button profile__editButton" type="button" name="edit" aria-label="Редактировать профиль"></button>
           <p class="profile__description">Исследователь океана</p>
         </div>
       </div>
-      <button class="button profile__addButton" type="button" name="add"></button>
+      <button class="button profile__addButton" type="button" name="add" aria-label="Добавить фото"></button>
     </section>
 
     <section class="elements">
@@ -38,7 +38,7 @@
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
       <button class="button popup__closeButton" type="button" name="close"></button>
-      <form action="#" method="post" name="editForm" class="popup__form editForm" novalidate>
+      <form method="post" class="popup__form editForm" novalidate>
         <input type="text" class="popup__input popup__input_type_username" id="usernameInput" name="username" minlength="2" maxlength="40" required>
         <span class="popup__error usernameInput-error"></span>
         <input type="text" class="popup__input popup__input_type_description" id="descriptionInput" name="description" minlength="2" maxlength="200"  required>
@@ -52,7 +52,7 @@
     <div class="popup__container">
       <h2 class="popup__title">Новое место</h2>
       <button class="button popup__closeButton" type="button" name="close"></button>
-      <form action="#" method="post" name="addForm" class="popup__form addForm" novalidate>
+      <form method="post" class="popup__form addForm" novalidate>
         <input type="text" class="popup__input popup__input_type_name" id="nameInput" name="name" placeholder="Название" minlength="2" maxlength="30" required>
         <span class="popup__error nameInput-error"></span>
         <input type="url" class="popup__input popup__input_type_link" id="linkInput" name="link" placeholder="Ссылка на картинку" required>
@@ -64,7 +64,7 @@
 
   <div class="popup popup_type_image">
     <div class="popup__image-container">
-      <button class="button popup__closeButton" type="button" name="close"></button>
+      <button class="button popup__closeButton" type="button" name="close" aria-label="Закрыть"></button>
       <figure class="popup__figure">
         <img src="#" alt="" class="popup__image">
         <figcaption class="popup__subtitle"></figcaption>
@@ -78,14 +78,11 @@
       <img src="#" alt="" class="card__image">
       <div class="card__description">
         <h2 class="card__subtitle"></h2>
-        <button class="button card__likeButton" type="button" name="like"></button>
+        <button class="button card__likeButton" type="button" name="like" aria-label="Like"></button>
       </div>
     </li>
   </template>
 
-  <script src="./scripts/initial-cards.js" type="module"></script>
-  <script src="./scripts/formValidator.js" type="module"></script>
-  <script src="./scripts/card.js" type="module"></script>
   <script src="./scripts/script.js" type="module"></script>
 
 </body>

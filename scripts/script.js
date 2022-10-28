@@ -1,25 +1,20 @@
 import FormValidator from './formValidator.js'
 import Card from './card.js';
-import {initialCard} from './initial-cards.js';
+import {initialCards} from './initial-cards.js';
 
-
+const page = document.querySelector('.page');
 const popupEdit = document.querySelector('.popup_type_edit');
 const usernameInput = document.querySelector('.popup__input_type_username');
 const descriptionInput = document.querySelector('.popup__input_type_description');
-const saveButtonPopupEdit = popupEdit.querySelector('.popup__saveButton');
 
 const popupAdd = document.querySelector('.popup_type_add');
 const placeNameInput = document.querySelector('.popup__input_type_name');
 const linkInput = document.querySelector('.popup__input_type_link');
-const saveButtonPopupAdd = popupAdd.querySelector('.popup__saveButton');
 
 const popupZoom = document.querySelector('.popup_type_image');
-const popupData = {
-  popup: popupZoom,
-  popupImage: popupZoom.querySelector('.popup__image'),
-  popupSubtitle: popupZoom.querySelector('.popup__subtitle'),
-  openPopupFunction: openPopup
-}
+const popupImage = popupZoom.querySelector('.popup__image');
+const popupSubtitle = popupZoom.querySelector('.popup__subtitle');
+
 
 const buttonEdit = document.querySelector('.profile__editButton');
 const buttonAdd = document.querySelector('.profile__addButton');
@@ -34,6 +29,17 @@ const formSelectors = {
   errorClass:'popup__error_active'
 };
 
+//функция возвращает объект формы с экземпляром класса валидации
+const getFormObj = (selector) => {
+  const form = document.querySelector(selector);
+  return {
+    element: form,
+    validator: new FormValidator(formSelectors, form)
+  }
+}
+const formAdd = getFormObj('.addForm');
+const formEdit = getFormObj('.editForm');
+
 const renderCard = (card, container) => {
   container.prepend(card);
 }
@@ -43,7 +49,7 @@ const handleFormEditSubmit = (event) => {
   profileName.textContent = usernameInput.value;
   profileDescription.textContent = descriptionInput.value;
   closePopup(popupEdit);
-  resetForm(popupEdit);
+  resetForm(formEdit);
 }
 
 const handleFormAddSubmit = (event) => {
@@ -52,11 +58,20 @@ const handleFormAddSubmit = (event) => {
       name: placeNameInput.value,
       link: linkInput.value
   }
-  const card = new Card(cardData, '.cardCopy', popupData);
+
+  const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
   renderCard(card.makeCard(), elementsList);
   closePopup(popupAdd);
-  resetForm(popupAdd);
-  disableButton(saveButtonPopupAdd, formSelectors.disabledButtonClass);
+  resetForm(formAdd);
+  formAdd.validator.disableButton();
+
+}
+
+const handleOpenImagePopup = (imageData) => {
+  popupImage.src = imageData.link;
+  popupImage.alt = imageData.name;
+  popupSubtitle.textContent = imageData.name;
+  openPopup(popupZoom);
 }
 
 const closePopupByClick = ({ target }) => {
@@ -76,36 +91,28 @@ function openPopup(namePopup) {
   namePopup.classList.add('popup_opened');
   window.addEventListener('mousedown', closePopupByClick);
   document.addEventListener('keydown', closePopupByKey);
+  page.classList.add('page_type_openedPopup');
 }
 
 const closePopup = (popup) => {
   popup.classList.remove('popup_opened');
   window.removeEventListener('mousedown', closePopupByClick);
   document.removeEventListener('keydown', closePopupByKey);
+  page.classList.remove('page_type_openedPopup');
 }
 
-const resetForm = (popup) => {
-  popup.querySelector('.popup__form').reset();
+const resetForm = (form) => {
+  form.element.reset();
 }
 
 // добавление начальных карточек
-initialCard.forEach( cardData => {
-  const card = new Card(cardData, '.cardCopy', popupData);
+initialCards.forEach( cardData => {
+  const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
   renderCard(card.makeCard(), elementsList);
 });
 
 // добавление валидации
 
-  //функция возвращает объект формы с экземпляром класса валидации
-const getFormObj = (selector) => {
-  const form = document.querySelector(selector);
-  return {
-    element: form,
-    validator: new FormValidator(formSelectors, form)
-  }
-}
-const formAdd = getFormObj('.addForm');
-const formEdit = getFormObj('.editForm');
 formAdd.validator.enableValidation();
 formEdit.validator.enableValidation();
 
@@ -117,8 +124,7 @@ buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
   usernameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
-
-  formEdit.validator.resetErrors(formSelectors);
+  formEdit.validator.resetErrors();
 })
 
 buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
