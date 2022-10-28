@@ -106,7 +106,7 @@ const resetForm = (form) => {
 }
 
 // добавление начальных карточек
-initialCard.forEach( cardData => {
+initialCards.forEach( cardData => {
   const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
   renderCard(card.makeCard(), elementsList);
 });
