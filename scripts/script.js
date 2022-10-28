@@ -2,7 +2,7 @@ import FormValidator from './formValidator.js'
 import Card from './card.js';
 import {initialCard} from './initial-cards.js';
 
-
+const page = document.querySelector('.page');
 const popupEdit = document.querySelector('.popup_type_edit');
 const usernameInput = document.querySelector('.popup__input_type_username');
 const descriptionInput = document.querySelector('.popup__input_type_description');
@@ -76,12 +76,14 @@ function openPopup(namePopup) {
   namePopup.classList.add('popup_opened');
   window.addEventListener('mousedown', closePopupByClick);
   document.addEventListener('keydown', closePopupByKey);
+  page.classList.add('page_type_openedPopup');
 }
 
 const closePopup = (popup) => {
   popup.classList.remove('popup_opened');
   window.removeEventListener('mousedown', closePopupByClick);
   document.removeEventListener('keydown', closePopupByKey);
+  page.classList.remove('page_type_openedPopup');
 }
 
 const resetForm = (popup) => {
