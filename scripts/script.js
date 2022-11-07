@@ -1,5 +1,6 @@
 import FormValidator from './formValidator.js'
 import Card from './card.js';
+import Section from './section.js';
 import {initialCards} from './initial-cards.js';
 
 const page = document.querySelector('.page');
@@ -20,7 +21,7 @@ const buttonEdit = document.querySelector('.profile__editButton');
 const buttonAdd = document.querySelector('.profile__addButton');
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
-const elementsList =  document.querySelector('.elements__list');
+// const elementsList =  document.querySelector('.elements__list');
 const formSelectors = {
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__saveButton',
@@ -106,11 +107,16 @@ const resetForm = (form) => {
 }
 
 // добавление начальных карточек
-initialCards.forEach( cardData => {
-  const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
-  renderCard(card.makeCard(), elementsList);
-});
+// initialCards.forEach( cardData => {
+//   const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
+//   renderCard(card.makeCard(), elementsList);
+// });
 
+const cardList = new Section({items: initialCards, renderer:(card) => {
+  const copycard = new Card(card, ".cardCopy", handleOpenImagePopup);
+  cardList.addItem(copycard.makeCard());
+}}, ".elements__list");
+cardList.renderItems();
 // добавление валидации
 
 formAdd.validator.enableValidation();
