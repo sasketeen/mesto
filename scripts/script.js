@@ -1,6 +1,7 @@
-import FormValidator from './formValidator.js'
-import Card from './card.js';
-import Section from './section.js';
+import FormValidator from './FormValidator.js'
+import Card from './Card.js';
+import Section from './Section.js';
+import Popup from './Popup.js';
 import {initialCards} from './initial-cards.js';
 
 const page = document.querySelector('.page');
@@ -8,7 +9,8 @@ const popupEdit = document.querySelector('.popup_type_edit');
 const usernameInput = document.querySelector('.popup__input_type_username');
 const descriptionInput = document.querySelector('.popup__input_type_description');
 
-const popupAdd = document.querySelector('.popup_type_add');
+const popupAdd = new Popup(".popup_type_add"); //document.querySelector('.popup_type_add');
+popupAdd.setEventListeners();
 const placeNameInput = document.querySelector('.popup__input_type_name');
 const linkInput = document.querySelector('.popup__input_type_link');
 
@@ -62,7 +64,7 @@ const handleFormAddSubmit = (event) => {
 
   const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
   renderCard(card.makeCard(), elementsList);
-  closePopup(popupAdd);
+  popupAdd.closePopup;
   resetForm(formAdd);
   formAdd.validator.disableButton();
 
@@ -133,4 +135,4 @@ buttonEdit.addEventListener('click', () => {
   formEdit.validator.resetErrors();
 })
 
-buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
+buttonAdd.addEventListener('click', () => { popupAdd.open(); });
