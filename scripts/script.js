@@ -1,22 +1,22 @@
 import FormValidator from './FormValidator.js'
 import Card from './Card.js';
 import Section from './Section.js';
-import Popup from './Popup.js';
 import {initialCards} from './initial-cards.js';
+import PopupWithImage from './PopupWithImage.js';
 
 const page = document.querySelector('.page');
 const popupEdit = document.querySelector('.popup_type_edit');
 const usernameInput = document.querySelector('.popup__input_type_username');
 const descriptionInput = document.querySelector('.popup__input_type_description');
 
-const popupAdd = new Popup(".popup_type_add"); //document.querySelector('.popup_type_add');
-popupAdd.setEventListeners();
+const popupAdd = document.querySelector('.popup_type_add');
 const placeNameInput = document.querySelector('.popup__input_type_name');
 const linkInput = document.querySelector('.popup__input_type_link');
 
-const popupZoom = document.querySelector('.popup_type_image');
-const popupImage = popupZoom.querySelector('.popup__image');
-const popupSubtitle = popupZoom.querySelector('.popup__subtitle');
+const popupZoom = new PopupWithImage(".popup_type_image");
+popupZoom.setEventListeners();
+// const popupImage = popupZoom.querySelector('.popup__image');
+// const popupSubtitle = popupZoom.querySelector('.popup__subtitle');
 
 
 const buttonEdit = document.querySelector('.profile__editButton');
@@ -64,17 +64,18 @@ const handleFormAddSubmit = (event) => {
 
   const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
   renderCard(card.makeCard(), elementsList);
-  popupAdd.closePopup;
+  closePopup(popupAdd);
   resetForm(formAdd);
   formAdd.validator.disableButton();
 
 }
 
 const handleOpenImagePopup = (imageData) => {
-  popupImage.src = imageData.link;
-  popupImage.alt = imageData.name;
-  popupSubtitle.textContent = imageData.name;
-  openPopup(popupZoom);
+  popupZoom.open(imageData);
+  // popupImage.src = imageData.link;
+  // popupImage.alt = imageData.name;
+  // popupSubtitle.textContent = imageData.name;
+  // openPopup(popupZoom);
 }
 
 const closePopupByClick = ({ target }) => {
@@ -135,4 +136,4 @@ buttonEdit.addEventListener('click', () => {
   formEdit.validator.resetErrors();
 })
 
-buttonAdd.addEventListener('click', () => { popupAdd.open(); });
+buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
