@@ -3,10 +3,6 @@ export default class Popup {
     this._popup = document.querySelector(popupSelector);
   }
 
-  _handleEscClose = (evt) => {
-    if (evt.key === "Escape") this.close();
-  };
-
   open() {
     this._popup.classList.add("popup_opened");
     document.addEventListener("keydown", this._handleEscClose);
@@ -27,4 +23,8 @@ export default class Popup {
       }
     });
   }
+
+  _handleEscClose = (evt) => {
+    if (evt.key === "Escape") this.close();
+  };
 }

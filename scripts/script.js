@@ -3,15 +3,32 @@ import Card from './Card.js';
 import Section from './Section.js';
 import {initialCards} from './initial-cards.js';
 import PopupWithImage from './PopupWithImage.js';
+import PopupWithForm from './PopupWithForm.js';
 
 const page = document.querySelector('.page');
+
 const popupEdit = document.querySelector('.popup_type_edit');
 const usernameInput = document.querySelector('.popup__input_type_username');
 const descriptionInput = document.querySelector('.popup__input_type_description');
 
-const popupAdd = document.querySelector('.popup_type_add');
-const placeNameInput = document.querySelector('.popup__input_type_name');
-const linkInput = document.querySelector('.popup__input_type_link');
+// const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
+//   profileName.textContent = usernameInput.value;
+//   profileDescription.textContent = descriptionInput.value;
+//   popupEdit.close();
+// });
+
+// const popupAdd = document.querySelector('.popup_type_add');
+// const placeNameInput = document.querySelector('.popup__input_type_name');
+// const linkInput = document.querySelector('.popup__input_type_link');
+const popupAdd = new PopupWithForm(".popup_type_add", (inputsValues) => {
+  const card = new Card(inputsValues, ".cardCopy", handleOpenImagePopup);
+  cardList.addItem(card.makeCard());
+  // renderCard(card.makeCard(), elementsList);
+  popupAdd.close();
+  // resetForm(formAdd);
+  formAdd.validator.disableButton();
+});
+popupAdd.setEventListeners();
 
 const popupZoom = new PopupWithImage(".popup_type_image");
 popupZoom.setEventListeners();
@@ -24,6 +41,7 @@ const buttonAdd = document.querySelector('.profile__addButton');
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 // const elementsList =  document.querySelector('.elements__list');
+
 const formSelectors = {
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__saveButton',
@@ -42,10 +60,12 @@ const getFormObj = (selector) => {
 }
 const formAdd = getFormObj('.addForm');
 const formEdit = getFormObj('.editForm');
+formAdd.validator.enableValidation();
+formEdit.validator.enableValidation();
 
-const renderCard = (card, container) => {
-  container.prepend(card);
-}
+// const renderCard = (card, container) => {
+//   container.prepend(card);
+// }
 
 const handleFormEditSubmit = (event) => {
   event.preventDefault();
@@ -55,20 +75,19 @@ const handleFormEditSubmit = (event) => {
   resetForm(formEdit);
 }
 
-const handleFormAddSubmit = (event) => {
-  event.preventDefault();
-  const cardData = {
-      name: placeNameInput.value,
-      link: linkInput.value
-  }
+// const handleFormAddSubmit = (event, inputsData) => {
+//   event.preventDefault();
+//   const cardData = {
+//       name: placeNameInput.value,
+//       link: linkInput.value
+//   }
 
-  const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
-  renderCard(card.makeCard(), elementsList);
-  closePopup(popupAdd);
-  resetForm(formAdd);
-  formAdd.validator.disableButton();
-
-}
+//   const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
+//   renderCard(card.makeCard(), elementsList);
+//   closePopup(popupAdd);
+//   resetForm(formAdd);
+//   formAdd.validator.disableButton();
+// }
 
 const handleOpenImagePopup = (imageData) => {
   popupZoom.open(imageData);
@@ -110,24 +129,25 @@ const resetForm = (form) => {
 }
 
 // добавление начальных карточек
+
 // initialCards.forEach( cardData => {
 //   const card = new Card(cardData, '.cardCopy', handleOpenImagePopup);
 //   renderCard(card.makeCard(), elementsList);
 // });
 
-const cardList = new Section({items: initialCards, renderer:(card) => {
-  const copycard = new Card(card, ".cardCopy", handleOpenImagePopup);
+const cardList = new Section({items: initialCards, renderer:(cardData) => {
+  const copycard = new Card(cardData, ".cardCopy", handleOpenImagePopup);
   cardList.addItem(copycard.makeCard());
 }}, ".elements__list");
 cardList.renderItems();
 // добавление валидации
 
-formAdd.validator.enableValidation();
-formEdit.validator.enableValidation();
+// formAdd.validator.enableValidation();
+// formEdit.validator.enableValidation();
 
 // добавление слушателей
 formEdit.element.addEventListener('submit', handleFormEditSubmit);
-formAdd.element.addEventListener('submit', handleFormAddSubmit);
+// formAdd.element.addEventListener('submit', handleFormAddSubmit);
 
 buttonEdit.addEventListener('click', () => {
   openPopup(popupEdit);
@@ -136,4 +156,4 @@ buttonEdit.addEventListener('click', () => {
   formEdit.validator.resetErrors();
 })
 
-buttonAdd.addEventListener('click', () => { openPopup(popupAdd) });
+buttonAdd.addEventListener('click', () => { popupAdd.open() });
