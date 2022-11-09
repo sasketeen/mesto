@@ -1,10 +1,10 @@
-import FormValidator from "./FormValidator.js";
-import Card from "./Card.js";
-import Section from "./Section.js";
-import { initialCards } from "./initial-cards.js";
-import PopupWithImage from "./PopupWithImage.js";
-import PopupWithForm from "./PopupWithForm.js";
-import UserInfo from "./UserInfo.js";
+import FormValidator from "../components/FormValidator.js";
+import Card from "../components/Card.js";
+import Section from "../components/Section.js";
+import { initialCards } from "../utils/initial-cards.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import UserInfo from "../components/UserInfo.js";
 
 const buttonEdit = document.querySelector(".profile__editButton");
 const buttonAdd = document.querySelector(".profile__addButton");
@@ -48,6 +48,7 @@ popupAdd.setEventListeners();
 const popupZoom = new PopupWithImage(".popup_type_image");
 popupZoom.setEventListeners();
 
+
 // создание экземпляра класса секции
 const cardList = new Section(
   {
@@ -64,7 +65,7 @@ const userInfo = new UserInfo({
 })
 
 // функция рендеринга карточек
-const renderCard = (cardData) => {
+function renderCard(cardData) {
   const copycard = new Card(cardData, ".cardCopy", (imageData) => { popupZoom.open(imageData) });
   cardList.addItem(copycard.makeCard());
 }
@@ -80,5 +81,6 @@ buttonEdit.addEventListener("click", () => {
 });
 
 buttonAdd.addEventListener("click", () => {
+  formAdd.validator.resetErrors();
   popupAdd.open();
 });
