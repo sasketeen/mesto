@@ -17,7 +17,11 @@ const formSelectors = {
   errorClass: "popup__error_active",
 };
 
-//функция возвращает объект формы с экземпляром класса валидации
+/**
+ *
+ * @param {string} selector - селектор формы
+ * @returns {object} объект, содержащий форму и экземпляр класса валидатора
+ */
 const getFormObj = (selector) => {
   const form = document.querySelector(selector);
   return {
@@ -40,7 +44,8 @@ const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
 popupEdit.setEventListeners();
 
 const popupAdd = new PopupWithForm(".popup_type_add", (inputsValues) => {
-  renderCard(inputsValues);
+  const card = createCard(inputsValues);
+  cardList.addItem(card);
   popupAdd.close();
   formAdd.validator.disableButton();
 });
@@ -54,7 +59,10 @@ popupZoom.setEventListeners();
 const cardList = new Section(
   {
     items: initialCards,
-    renderer: renderCard,
+    renderer: (cardData) => {
+      const card = createCard(cardData);
+      cardList.addItem(card);
+    }
   },
   ".elements__list"
 );
@@ -65,10 +73,14 @@ const userInfo = new UserInfo({
   descriptionSelector: ".profile__description",
 })
 
-// функция рендеринга карточек
-function renderCard(cardData) {
-  const copycard = new Card(cardData, ".cardCopy", (imageData) => { popupZoom.open(imageData) });
-  cardList.addItem(copycard.makeCard());
+/**
+ *
+ * @param {object} cardData - объект содержаший название (поле name) и ссылку (поле link) на картинку
+ * @returns {object} заполненный экземпляр карточки
+ */
+function createCard(cardData) {
+  const cardCopy = new Card(cardData, ".cardCopy", (imageData) => { popupZoom.open(imageData) });
+  return cardCopy.makeCard();
 }
 
 // добавление начальных карточек
@@ -76,8 +88,8 @@ cardList.renderItems();
 
 // добавление слушателей
 buttonEdit.addEventListener("click", () => {
-  popupEdit.open();
   popupEdit.setInputsValue(userInfo.getUserInfo());
+  popupEdit.open();
   formEdit.validator.resetErrors();
 });
 
