@@ -19,7 +19,6 @@ export default class PopupWithForm extends Popup {
 
   // функция вставки данных в инпуты формы
   setInputsValue(data) {
-    // console.log(data)
     this._inputs.forEach((input) => {
       input.value = data[input.name];
     });

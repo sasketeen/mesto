@@ -44,6 +44,7 @@ export default class Card {
   // функция обработки клика по кнопке удаления
   _handleDeleteClick() {
     this._card.remove();
+    this._card = null;
   }
 
   // функция обработки клика по кнопке лайка

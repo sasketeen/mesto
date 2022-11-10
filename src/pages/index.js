@@ -17,7 +17,11 @@ const formSelectors = {
   errorClass: "popup__error_active",
 };
 
-//функция возвращает объект формы с экземпляром класса валидации
+/**
+ *
+ * @param {string} selector - селектор формы
+ * @returns {object} объект, содержащий форму и экземпляр класса валидатора
+ */
 const getFormObj = (selector) => {
   const form = document.querySelector(selector);
   return {
@@ -69,7 +73,11 @@ const userInfo = new UserInfo({
   descriptionSelector: ".profile__description",
 })
 
-// создание создания карточки
+/**
+ *
+ * @param {object} cardData - объект содержаший название (поле name) и ссылку (поле link) на картинку
+ * @returns {object} заполненный экземпляр карточки
+ */
 function createCard(cardData) {
   const cardCopy = new Card(cardData, ".cardCopy", (imageData) => { popupZoom.open(imageData) });
   return cardCopy.makeCard();
@@ -80,8 +88,8 @@ cardList.renderItems();
 
 // добавление слушателей
 buttonEdit.addEventListener("click", () => {
-  popupEdit.open();
   popupEdit.setInputsValue(userInfo.getUserInfo());
+  popupEdit.open();
   formEdit.validator.resetErrors();
 });
 

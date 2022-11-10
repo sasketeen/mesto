@@ -26,6 +26,7 @@
     "css-loader": "^6.7.1",
     "cssnano": "^5.1.14",
     "html-webpack-plugin": "^5.5.0",
+    "jsdoc": "^4.0.0",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss-loader": "^7.0.1",
     "webpack": "^5.75.0",
