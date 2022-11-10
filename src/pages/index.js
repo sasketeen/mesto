@@ -40,7 +40,8 @@ const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
 popupEdit.setEventListeners();
 
 const popupAdd = new PopupWithForm(".popup_type_add", (inputsValues) => {
-  renderCard(inputsValues);
+  const card = createCard(inputsValues);
+  cardList.addItem(card);
   popupAdd.close();
   formAdd.validator.disableButton();
 });
@@ -54,7 +55,10 @@ popupZoom.setEventListeners();
 const cardList = new Section(
   {
     items: initialCards,
-    renderer: renderCard,
+    renderer: (cardData) => {
+      const card = createCard(cardData);
+      cardList.addItem(card);
+    }
   },
   ".elements__list"
 );
@@ -65,10 +69,10 @@ const userInfo = new UserInfo({
   descriptionSelector: ".profile__description",
 })
 
-// функция рендеринга карточек
-function renderCard(cardData) {
-  const copycard = new Card(cardData, ".cardCopy", (imageData) => { popupZoom.open(imageData) });
-  cardList.addItem(copycard.makeCard());
+// создание создания карточки
+function createCard(cardData) {
+  const cardCopy = new Card(cardData, ".cardCopy", (imageData) => { popupZoom.open(imageData) });
+  return cardCopy.makeCard();
 }
 
 // добавление начальных карточек
