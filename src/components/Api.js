@@ -16,4 +16,10 @@ export default class Api {
       headers: this._headers,
     }).then((response) => this._gotResponse(response));
   }
+
+  getUserInfo() {
+    return fetch(`${this._serverLink}/users/me`, {
+      headers: this._headers,
+    }).then((response) => this._gotResponse(response));
+  }
 }

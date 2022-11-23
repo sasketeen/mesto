@@ -2,7 +2,6 @@ import './index.css';
 import FormValidator from "../components/FormValidator.js";
 import Card from "../components/Card.js";
 import Section from "../components/Section.js";
-import { initialCards } from "../utils/initial-cards.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
@@ -33,6 +32,26 @@ const getFormObj = (selector) => {
 const formAdd = getFormObj(".addForm");
 const formEdit = getFormObj(".editForm");
 
+
+// создание экземпляра класса Api
+const api = new Api("https://mesto.nomoreparties.co/v1/cohort-54", {
+  authorization: "7b813897-5964-428c-86c0-44432f9d08b4",
+});
+
+// инициализация начальных данных
+api
+  .getCards()
+  .then((result) => {
+    cardList.renderItems(result);
+  })
+  .catch((err) => console.log(err));
+api
+  .getUserInfo()
+  .then((result) => {
+    userInfo.setUserInfo(result);
+  })
+  .catch((err) => console.log(err));
+
 // добавление валидации
 formAdd.validator.enableValidation();
 formEdit.validator.enableValidation();
@@ -57,13 +76,9 @@ popupZoom.setEventListeners();
 
 
 // создание экземпляра класса секции
-const cardList = new Section(
-  {
-    items: initialCards,
-    renderer: (cardData) => {
-      const card = createCard(cardData);
-      cardList.addItem(card);
-    }
+const cardList = new Section((cardData) => {
+    const card = createCard(cardData);
+    cardList.addItem(card);
   },
   ".elements__list"
 );
@@ -72,7 +87,8 @@ const cardList = new Section(
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   descriptionSelector: ".profile__description",
-})
+  avatarSelector: ".profile__avatar",
+});
 
 /**
  *
@@ -83,18 +99,6 @@ function createCard(cardData) {
   const cardCopy = new Card(cardData, ".cardCopy", (imageData) => { popupZoom.open(imageData) });
   return cardCopy.makeCard();
 }
-
-// добавление начальных карточек
-
-const api = new Api("https://mesto.nomoreparties.co/v1/cohort-54", {
-  authorization: "7b813897-5964-428c-86c0-44432f9d08b4"
-});
-api
-  .getCards()
-  .then((result) => {
-    cardList.renderItems(result);
-  })
-  .catch((err) => console.log(err));
 
 // добавление слушателей
 buttonEdit.addEventListener("click", () => {
