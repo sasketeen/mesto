@@ -6,6 +6,7 @@ import { initialCards } from "../utils/initial-cards.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
+import Api from '../components/Api';
 
 const buttonEdit = document.querySelector(".profile__editButton");
 const buttonAdd = document.querySelector(".profile__addButton");
@@ -84,7 +85,16 @@ function createCard(cardData) {
 }
 
 // добавление начальных карточек
-cardList.renderItems();
+
+const api = new Api("https://mesto.nomoreparties.co/v1/cohort-54", {
+  authorization: "7b813897-5964-428c-86c0-44432f9d08b4"
+});
+api
+  .getCards()
+  .then((result) => {
+    cardList.renderItems(result);
+  })
+  .catch((err) => console.log(err));
 
 // добавление слушателей
 buttonEdit.addEventListener("click", () => {
