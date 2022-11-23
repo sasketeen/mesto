@@ -4,22 +4,22 @@ export default class Api {
     this._headers = headers;
   }
 
-  _gotResponse(response) {
+  _gotResponse(response, functionName) {
     if (response.ok) {
       return response.json();
     }
-    return Promise.reject(`Error: ${response.status}`);
+    return Promise.reject(`Error in ${functionName}: ${response.status}`);
   }
 
   getCards() {
     return fetch(`${this._serverLink}/cards`, {
       headers: this._headers,
-    }).then((response) => this._gotResponse(response));
+    }).then((response) => this._gotResponse(response, "getCards"));
   }
 
   getUserInfo() {
     return fetch(`${this._serverLink}/users/me`, {
       headers: this._headers,
-    }).then((response) => this._gotResponse(response));
+    }).then((response) => this._gotResponse(response, "getUserInfo"));
   }
 }

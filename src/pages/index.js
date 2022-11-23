@@ -39,16 +39,10 @@ const api = new Api("https://mesto.nomoreparties.co/v1/cohort-54", {
 });
 
 // инициализация начальных данных
-api
-  .getCards()
-  .then((result) => {
-    cardList.renderItems(result);
-  })
-  .catch((err) => console.log(err));
-api
-  .getUserInfo()
-  .then((result) => {
-    userInfo.setUserInfo(result);
+Promise.all([api.getCards(), api.getUserInfo()])
+  .then(([cards, userData]) => {
+    cardList.renderItems(cards);
+    userInfo.setUserInfo(userData);
   })
   .catch((err) => console.log(err));
 
