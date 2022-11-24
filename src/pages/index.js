@@ -16,6 +16,13 @@ const formSelectors = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_active",
 };
+const apiConfig = {
+  serverLink: "https://mesto.nomoreparties.co/v1/cohort-54",
+  headers: {
+    authorization: "7b813897-5964-428c-86c0-44432f9d08b4",
+    "Content-Type": "application/json",
+  },
+};
 
 /**
  *
@@ -34,9 +41,7 @@ const formEdit = getFormObj(".editForm");
 
 
 // создание экземпляра класса Api
-const api = new Api("https://mesto.nomoreparties.co/v1/cohort-54", {
-  authorization: "7b813897-5964-428c-86c0-44432f9d08b4",
-});
+const api = new Api(apiConfig);
 
 // инициализация начальных данных
 Promise.all([api.getCards(), api.getUserInfo()])
@@ -52,8 +57,13 @@ formEdit.validator.enableValidation();
 
 // создание экземпляров классов попапа
 const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
-  userInfo.setUserInfo(inputsValues);
-  popupEdit.close();
+  api
+    .editUserInfo(inputsValues)
+    .then((newUserData) => {
+      userInfo.setUserInfo(newUserData);
+      popupEdit.close();
+    })
+    .catch((err) => console.log(err));
 });
 popupEdit.setEventListeners();
 
