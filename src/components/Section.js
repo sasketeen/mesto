@@ -1,14 +1,14 @@
 export default class Section {
-  constructor({ items, renderer }, containerSelector) {
-    this._items = items;
+  constructor(renderer, containerSelector) {
     this._renderer = renderer;
     this._container = document.querySelector(containerSelector);
   }
 
   // функция отрисовки начальных карточек
-  renderItems() {
-    this._items.forEach((item) => {
-      this._renderer(item);
+  renderItems(itemsData) {
+    itemsData.forEach((itemData) => {
+      const item = this._renderer(itemData);
+      this._container.append(item)
     });
   }
 
