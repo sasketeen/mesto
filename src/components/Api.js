@@ -1,5 +1,5 @@
 export default class Api {
-  constructor({serverLink, headers}) {
+  constructor({ serverLink, headers }) {
     this._serverLink = serverLink;
     this._headers = headers;
   }
@@ -23,7 +23,7 @@ export default class Api {
     }).then((response) => this._gotResponse(response, "getUserInfo"));
   }
 
-  editUserInfo({username, description}) {
+  editUserInfo({ username, description }) {
     return fetch(`${this._serverLink}/users/me`, {
       method: "PATCH",
       headers: this._headers,
@@ -34,7 +34,7 @@ export default class Api {
     }).then((response) => this._gotResponse(response, "editUserInfo"));
   }
 
-  addCard({name, link}) {
+  addCard({ name, link }) {
     return fetch(`${this._serverLink}/cards`, {
       method: "POST",
       headers: this._headers,
@@ -50,5 +50,19 @@ export default class Api {
       method: "DELETE",
       headers: this._headers,
     }).then((response) => this._gotResponse(response, "deleteCard"));
+  }
+
+  addLike(cardId) {
+    return fetch(`${this._serverLink}/cards/${cardId}/likes`, {
+      method: "PUT",
+      headers: this._headers,
+    }).then((response) => this._gotResponse(response, "addLike"));
+  }
+
+  removeLike(cardId) {
+    return fetch(`${this._serverLink}/cards/${cardId}/likes`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then((response) => this._gotResponse(response, "removeLike"));
   }
 }
