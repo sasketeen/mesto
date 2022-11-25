@@ -7,6 +7,7 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from '../components/Api';
 
+let userId;
 const buttonEdit = document.querySelector(".profile__editButton");
 const buttonAdd = document.querySelector(".profile__addButton");
 const formSelectors = {
@@ -46,6 +47,7 @@ const api = new Api(apiConfig);
 // инициализация начальных данных
 Promise.all([api.getCards(), api.getUserInfo()])
   .then(([cardsData, userData]) => {
+    userId = userData._id;
     cardList.renderItems(cardsData);
     userInfo.setUserInfo(userData);
   })
@@ -100,7 +102,32 @@ const userInfo = new UserInfo({
  * @returns {object} заполненный экземпляр карточки
  */
 function createCard(cardData) {
-  const cardCopy = new Card(cardData, ".cardCopy", (imageData) => popupZoom.open(imageData));
+  const cardCopy = new Card(
+    cardData,
+    ".cardCopy",
+    (imageData) => popupZoom.open(imageData),
+    (cardId) => {
+      if (cardCopy.isLiked()) {
+        api
+          .removeLike(cardId)
+          .then((cardData) => {
+            cardCopy.updateLikes(cardData.likes);
+            cardCopy.toggleButtonLike();
+          })
+          .catch((err) => console.log(err));
+      }
+      else {
+        api
+          .addLike(cardId)
+          .then((cardData) => {
+            cardCopy.updateLikes(cardData.likes);
+            cardCopy.toggleButtonLike();
+          })
+          .catch((err) => console.log(err));
+      }
+    },
+    userId
+  );
   return cardCopy.makeCard();
 }
 
