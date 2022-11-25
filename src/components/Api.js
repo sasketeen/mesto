@@ -44,4 +44,11 @@ export default class Api {
       }),
     }).then((response) => this._gotResponse(response, "addCard"));
   }
+
+  deleteCard(cardId) {
+    return fetch(`${this._serverLink}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then((response) => this._gotResponse(response, "deleteCard"));
+  }
 }
