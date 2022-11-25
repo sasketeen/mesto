@@ -63,15 +63,20 @@ const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
       userInfo.setUserInfo(newUserData);
       popupEdit.close();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
 });
 popupEdit.setEventListeners();
 
 const popupAdd = new PopupWithForm(".popup_type_add", (inputsValues) => {
-  const card = createCard(inputsValues);
-  cardList.addItem(card);
-  popupAdd.close();
-  formAdd.validator.disableButton();
+  api
+    .addCard(inputsValues)
+    .then((newCardData) => {
+      const card = createCard(newCardData);
+      cardList.addItem(card);
+      popupAdd.close();
+      formAdd.validator.disableButton();
+    })
+    .catch((err) => console.log(err));
 });
 popupAdd.setEventListeners();
 

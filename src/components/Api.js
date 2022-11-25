@@ -33,4 +33,15 @@ export default class Api {
       }),
     }).then((response) => this._gotResponse(response, "editUserInfo"));
   }
+
+  addCard({name, link}) {
+    return fetch(`${this._serverLink}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        link: link,
+      }),
+    }).then((response) => this._gotResponse(response, "addCard"));
+  }
 }
