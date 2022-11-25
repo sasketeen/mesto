@@ -45,8 +45,8 @@ const api = new Api(apiConfig);
 
 // инициализация начальных данных
 Promise.all([api.getCards(), api.getUserInfo()])
-  .then(([cards, userData]) => {
-    cardList.renderItems(cards);
+  .then(([cardsData, userData]) => {
+    cardList.renderItems(cardsData);
     userInfo.setUserInfo(userData);
   })
   .catch((err) => console.log(err));
@@ -85,12 +85,7 @@ popupZoom.setEventListeners();
 
 
 // создание экземпляра класса секции
-const cardList = new Section((cardData) => {
-    const card = createCard(cardData);
-    cardList.addItem(card);
-  },
-  ".elements__list"
-);
+const cardList = new Section((cardData) => createCard(cardData), ".elements__list");
 
 // создание экземпляра класса информации
 const userInfo = new UserInfo({
@@ -105,7 +100,7 @@ const userInfo = new UserInfo({
  * @returns {object} заполненный экземпляр карточки
  */
 function createCard(cardData) {
-  const cardCopy = new Card(cardData, ".cardCopy", (imageData) => { popupZoom.open(imageData) });
+  const cardCopy = new Card(cardData, ".cardCopy", (imageData) => popupZoom.open(imageData));
   return cardCopy.makeCard();
 }
 

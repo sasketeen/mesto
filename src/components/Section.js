@@ -5,9 +5,10 @@ export default class Section {
   }
 
   // функция отрисовки начальных карточек
-  renderItems(items) {
-    items.forEach((item) => {
-      this._renderer(item);
+  renderItems(itemsData) {
+    itemsData.forEach((itemData) => {
+      const item = this._renderer(itemData);
+      this._container.append(item)
     });
   }
 
