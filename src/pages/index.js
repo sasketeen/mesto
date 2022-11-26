@@ -110,8 +110,8 @@ function createCard(cardData) {
       if (cardCopy.isLiked()) {
         api
           .removeLike(cardId)
-          .then((cardData) => {
-            cardCopy.updateLikes(cardData.likes);
+          .then((newCardData) => {
+            cardCopy.updateLikes(newCardData.likes);
             cardCopy.toggleButtonLike();
           })
           .catch((err) => console.log(err));
@@ -119,8 +119,8 @@ function createCard(cardData) {
       else {
         api
           .addLike(cardId)
-          .then((cardData) => {
-            cardCopy.updateLikes(cardData.likes);
+          .then((newCardData) => {
+            cardCopy.updateLikes(newCardData.likes);
             cardCopy.toggleButtonLike();
           })
           .catch((err) => console.log(err));
