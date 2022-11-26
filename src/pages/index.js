@@ -61,43 +61,43 @@ Promise.all([api.getCards(), api.getUserInfo()])
   .catch((err) => console.log(err));
 
 // создание экземпляров классов попапа
-const popupEdit = new PopupWithForm(".popup_type_editProfile", (inputsValues) => {
+const popupEditProfile = new PopupWithForm(".popup_type_editProfile", (inputsValues) => {
   api
     .editUserInfo(inputsValues)
     .then((newUserData) => {
       userInfo.setUserInfo(newUserData);
-      popupEdit.close();
+      popupEditProfile.close();
     })
     .catch((err) => console.log(err));
 });
-popupEdit.setEventListeners();
+popupEditProfile.setEventListeners();
 
-const popupAdd = new PopupWithForm(".popup_type_addCard", (inputsValues) => {
+const popupAddCard = new PopupWithForm(".popup_type_addCard", (inputsValues) => {
   api
     .addCard(inputsValues)
     .then((newCardData) => {
       const card = createCard(newCardData);
       cardList.addItem(card);
-      popupAdd.close();
+      popupAddCard.close();
       formAddCard.validator.disableButton();
     })
     .catch((err) => console.log(err));
 });
-popupAdd.setEventListeners();
+popupAddCard.setEventListeners();
 
-// const popupAvatar = new PopupWithForm(
-//   ".popup_type_editAvatar",
-//   (inputsValues) => {
-//     api
-//       .editUserInfo(inputsValues)
-//       .then((newUserData) => {
-//         userInfo.setUserInfo(newUserData);
-//         popupAvatar.close();
-//       })
-//       .catch((err) => console.log(err));
-//   }
-// );
-// popupAvatar.setEventListeners();
+const popupEditAvatar = new PopupWithForm(
+  ".popup_type_editAvatar",
+  (inputsValues) => {
+    api
+      .editAvatar(inputsValues)
+      .then((newUserData) => {
+        userInfo.setUserInfo(newUserData);
+        popupEditAvatar.close();
+      })
+      .catch((err) => console.log(err));
+  }
+);
+popupEditAvatar.setEventListeners();
 
 const popupZoom = new PopupWithImage(".popup_type_image");
 popupZoom.setEventListeners();
@@ -187,15 +187,18 @@ const userInfo = new UserInfo({
 });
 
 // добавление слушателей
-// buttonEditAvatar.addEventListener('click', => {})
+buttonEditAvatar.addEventListener('click', () => {
+  formEditAvatar.validator.resetErrors();
+  popupEditAvatar.open();
+})
 
 buttonEditProfile.addEventListener("click", () => {
-  popupEdit.setInputsValue(userInfo.getUserInfo());
-  popupEdit.open();
+  popupEditProfile.setInputsValue(userInfo.getUserInfo());
   formEditProfile.validator.resetErrors();
+  popupEditProfile.open();
 });
 
 buttonAddCard.addEventListener("click", () => {
   formAddCard.validator.resetErrors();
-  popupAdd.open();
+  popupAddCard.open();
 });
