@@ -57,7 +57,7 @@ Promise.all([api.getCards(), api.getUserInfo()])
   .catch((err) => console.log(err));
 
 // создание экземпляров классов попапа
-const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
+const popupEdit = new PopupWithForm(".popup_type_editProfile", (inputsValues) => {
   api
     .editUserInfo(inputsValues)
     .then((newUserData) => {
@@ -68,7 +68,7 @@ const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
 });
 popupEdit.setEventListeners();
 
-const popupAdd = new PopupWithForm(".popup_type_add", (inputsValues) => {
+const popupAdd = new PopupWithForm(".popup_type_addCard", (inputsValues) => {
   api
     .addCard(inputsValues)
     .then((newCardData) => {
