@@ -187,10 +187,7 @@ const userInfo = new UserInfo({
 });
 
 // добавление слушателей
-buttonEditAvatar.addEventListener('click',() => {
-  buttonEditAvatar.addEventListener('click',() => {
-
-})
+// buttonEditAvatar.addEventListener('click', => {})
 
 buttonEditProfile.addEventListener("click", () => {
   popupEdit.setInputsValue(userInfo.getUserInfo());
