@@ -1,4 +1,4 @@
-import './index.css';
+import "./index.css";
 import FormValidator from "../components/FormValidator.js";
 import Card from "../components/Card.js";
 import Section from "../components/Section.js";
@@ -6,11 +6,13 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithConfirm from "../components/PopupWithConfirm";
 import UserInfo from "../components/UserInfo.js";
-import Api from '../components/Api';
+import Api from "../components/Api";
 
 let userId;
-const buttonEdit = document.querySelector(".profile__editButton");
-const buttonAdd = document.querySelector(".profile__addButton");
+const buttonEditProfile = document.querySelector(".profile__editButton");
+const buttonAddCard = document.querySelector(".profile__addButton");
+const buttonEditAvatar = document.querySelector(".profile__avatarButton");
+
 const formSelectors = {
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__saveButton",
@@ -26,6 +28,7 @@ const apiConfig = {
   },
 };
 
+//создание объектов форм и активация валидации
 /**
  *
  * @param {string} selector - селектор формы
@@ -38,9 +41,12 @@ const getFormObj = (selector) => {
     validator: new FormValidator(formSelectors, form),
   };
 };
-const formAdd = getFormObj(".addForm");
-const formEdit = getFormObj(".editForm");
-
+const formAddCard = getFormObj(".addCardForm");
+const formEditProfile = getFormObj(".editProfileForm");
+const formEditAvatar = getFormObj(".editAvatarForm");
+formAddCard.validator.enableValidation();
+formEditProfile.validator.enableValidation();
+formEditAvatar.validator.enableValidation();
 
 // создание экземпляра класса Api
 const api = new Api(apiConfig);
@@ -54,52 +60,70 @@ Promise.all([api.getCards(), api.getUserInfo()])
   })
   .catch((err) => console.log(err));
 
-// добавление валидации
-formAdd.validator.enableValidation();
-formEdit.validator.enableValidation();
-
 // создание экземпляров классов попапа
-const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
+const popupEditProfile = new PopupWithForm(".popup_type_editProfile", (inputsValues) => {
   api
     .editUserInfo(inputsValues)
     .then((newUserData) => {
       userInfo.setUserInfo(newUserData);
-      popupEdit.close();
+      popupEditProfile.close();
     })
-    .catch((err) => console.log(err))
+    .catch((err) => console.log(err));
 });
-popupEdit.setEventListeners();
+popupEditProfile.setEventListeners();
 
-const popupAdd = new PopupWithForm(".popup_type_add", (inputsValues) => {
+const popupAddCard = new PopupWithForm(".popup_type_addCard", (inputsValues) => {
   api
     .addCard(inputsValues)
     .then((newCardData) => {
       const card = createCard(newCardData);
       cardList.addItem(card);
-      popupAdd.close();
-      formAdd.validator.disableButton();
+      popupAddCard.close();
+      formAddCard.validator.disableButton();
     })
     .catch((err) => console.log(err));
 });
-popupAdd.setEventListeners();
+popupAddCard.setEventListeners();
+
+const popupEditAvatar = new PopupWithForm(
+  ".popup_type_editAvatar",
+  (inputsValues) => {
+    api
+      .editAvatar(inputsValues)
+      .then((newUserData) => {
+        userInfo.setUserInfo(newUserData);
+        popupEditAvatar.close();
+      })
+      .catch((err) => console.log(err));
+  }
+);
+popupEditAvatar.setEventListeners();
 
 const popupZoom = new PopupWithImage(".popup_type_image");
 popupZoom.setEventListeners();
 
-const popupConfirm = new PopupWithConfirm('.popup_type_confirm');
+const popupConfirm = new PopupWithConfirm(".popup_type_confirm");
 popupConfirm.setEventListeners();
 
 // создание экземпляра класса секции
-const cardList = new Section((cardData) => createCard(cardData), ".elements__list");
+const cardList = new Section(
+  (cardData) => createCard(cardData),
+  ".elements__list"
+);
 
-// создание экземпляра класса информации
-const userInfo = new UserInfo({
-  nameSelector: ".profile__name",
-  descriptionSelector: ".profile__description",
-  avatarSelector: ".profile__avatar",
-});
+/**
+ * Обработчик клика по картинке
+ * @param {object} imageData - данные картинки (link, name)
+ */
+const handleCardClick = (imageData) => {
+  popupZoom.open(imageData);
+};
 
-const handleCardClick = (imageData) => popupZoom.open(imageData);
+/**
+ * Обработчик лайка
+ * @param {object} card - экземпляр карточки
+ * @param {string} cardId - уникальный id карточки
+ */
 const handleLikeClick = (card, cardId) => {
   if (card.isLiked()) {
     api
@@ -119,6 +143,12 @@ const handleLikeClick = (card, cardId) => {
       .catch((err) => console.log(err));
   }
 };
+
+/**
+ * Обработчик удаления
+ * @param {object} card - экземпляр карточки
+ * @param {string} cardId - уникальный id карточки
+ */
 const handleDeleteClick = (card, cardId) => {
   popupConfirm.open();
   popupConfirm.setButtonHandler(() => {
@@ -130,10 +160,11 @@ const handleDeleteClick = (card, cardId) => {
       })
       .catch((err) => console.log(err));
   });
-}
+};
+
 /**
- *
- * @param {object} cardData - объект содержаший данные карточки
+ * Функция создания готовой карточки
+ * @param {object} cardData - данные карточки
  * @returns {object} заполненный экземпляр карточки
  */
 const createCard = (cardData) => {
@@ -146,16 +177,28 @@ const createCard = (cardData) => {
     userId
   );
   return cardCopy.makeCard();
-}
+};
 
-// добавление слушателей
-buttonEdit.addEventListener("click", () => {
-  popupEdit.setInputsValue(userInfo.getUserInfo());
-  popupEdit.open();
-  formEdit.validator.resetErrors();
+// создание экземпляра класса информации
+const userInfo = new UserInfo({
+  nameSelector: ".profile__name",
+  descriptionSelector: ".profile__description",
+  avatarSelector: ".profile__avatar",
 });
 
-buttonAdd.addEventListener("click", () => {
-  formAdd.validator.resetErrors();
-  popupAdd.open();
+// добавление слушателей
+buttonEditAvatar.addEventListener('click', () => {
+  formEditAvatar.validator.resetErrors();
+  popupEditAvatar.open();
+})
+
+buttonEditProfile.addEventListener("click", () => {
+  popupEditProfile.setInputsValue(userInfo.getUserInfo());
+  formEditProfile.validator.resetErrors();
+  popupEditProfile.open();
+});
+
+buttonAddCard.addEventListener("click", () => {
+  formAddCard.validator.resetErrors();
+  popupAddCard.open();
 });
