@@ -61,40 +61,50 @@ Promise.all([api.getCards(), api.getUserInfo()])
   .catch((err) => console.log(err));
 
 // создание экземпляров классов попапа
-const popupEditProfile = new PopupWithForm(".popup_type_editProfile", (inputsValues) => {
-  api
-    .editUserInfo(inputsValues)
-    .then((newUserData) => {
-      userInfo.setUserInfo(newUserData);
-      popupEditProfile.close();
-    })
-    .catch((err) => console.log(err));
-});
+const popupEditProfile = new PopupWithForm(
+  ".popup_type_editProfile",
+  (inputsValues) => {
+    popupEditProfile.showLoading(true);
+    api
+      .editUserInfo(inputsValues)
+      .then((newUserData) => {
+        userInfo.setUserInfo(newUserData);
+        popupEditProfile.close();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => popupEditProfile.showLoading(false))
+  });
 popupEditProfile.setEventListeners();
 
-const popupAddCard = new PopupWithForm(".popup_type_addCard", (inputsValues) => {
-  api
-    .addCard(inputsValues)
-    .then((newCardData) => {
-      const card = createCard(newCardData);
-      cardList.addItem(card);
-      popupAddCard.close();
-      formAddCard.validator.disableButton();
-    })
-    .catch((err) => console.log(err));
-});
+const popupAddCard = new PopupWithForm(
+  ".popup_type_addCard",
+  (inputsValues) => {
+    popupAddCard.showLoading(true);
+    api
+      .addCard(inputsValues)
+      .then((newCardData) => {
+        const card = createCard(newCardData);
+        cardList.addItem(card);
+        popupAddCard.close();
+        formAddCard.validator.disableButton();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => popupEditProfile.showLoading(false));
+  });
 popupAddCard.setEventListeners();
 
 const popupEditAvatar = new PopupWithForm(
   ".popup_type_editAvatar",
   (inputsValues) => {
+    popupEditAvatar.showLoading(true);
     api
       .editAvatar(inputsValues)
       .then((newUserData) => {
         userInfo.setUserInfo(newUserData);
         popupEditAvatar.close();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => popupEditAvatar.showLoading(false));
   }
 );
 popupEditAvatar.setEventListeners();
@@ -152,13 +162,15 @@ const handleLikeClick = (card, cardId) => {
 const handleDeleteClick = (card, cardId) => {
   popupConfirm.open();
   popupConfirm.setButtonHandler(() => {
+    popupConfirm.showLoading(true);
     api
       .deleteCard(cardId)
       .then(() => {
         popupConfirm.close();
         card.deleteCard();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => popupConfirm.showLoading(false));
   });
 };
 
