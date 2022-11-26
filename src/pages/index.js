@@ -9,8 +9,10 @@ import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api";
 
 let userId;
-const buttonEdit = document.querySelector(".profile__editButton");
-const buttonAdd = document.querySelector(".profile__addButton");
+const buttonEditProfile = document.querySelector(".profile__editButton");
+const buttonAddCard = document.querySelector(".profile__addButton");
+const buttonEditAvatar = document.querySelector(".profile__avatarButton");
+
 const formSelectors = {
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__saveButton",
@@ -39,10 +41,12 @@ const getFormObj = (selector) => {
     validator: new FormValidator(formSelectors, form),
   };
 };
-const formAdd = getFormObj(".addForm");
-const formEdit = getFormObj(".editForm");
-formAdd.validator.enableValidation();
-formEdit.validator.enableValidation();
+const formAddCard = getFormObj(".addCardForm");
+const formEditProfile = getFormObj(".editProfileForm");
+const formEditAvatar = getFormObj(".editAvatarForm");
+formAddCard.validator.enableValidation();
+formEditProfile.validator.enableValidation();
+formEditAvatar.validator.enableValidation();
 
 // создание экземпляра класса Api
 const api = new Api(apiConfig);
@@ -75,11 +79,25 @@ const popupAdd = new PopupWithForm(".popup_type_addCard", (inputsValues) => {
       const card = createCard(newCardData);
       cardList.addItem(card);
       popupAdd.close();
-      formAdd.validator.disableButton();
+      formAddCard.validator.disableButton();
     })
     .catch((err) => console.log(err));
 });
 popupAdd.setEventListeners();
+
+// const popupAvatar = new PopupWithForm(
+//   ".popup_type_editAvatar",
+//   (inputsValues) => {
+//     api
+//       .editUserInfo(inputsValues)
+//       .then((newUserData) => {
+//         userInfo.setUserInfo(newUserData);
+//         popupAvatar.close();
+//       })
+//       .catch((err) => console.log(err));
+//   }
+// );
+// popupAvatar.setEventListeners();
 
 const popupZoom = new PopupWithImage(".popup_type_image");
 popupZoom.setEventListeners();
@@ -169,13 +187,18 @@ const userInfo = new UserInfo({
 });
 
 // добавление слушателей
-buttonEdit.addEventListener("click", () => {
+buttonEditAvatar.addEventListener('click',() => {
+  buttonEditAvatar.addEventListener('click',() => {
+
+})
+
+buttonEditProfile.addEventListener("click", () => {
   popupEdit.setInputsValue(userInfo.getUserInfo());
   popupEdit.open();
-  formEdit.validator.resetErrors();
+  formEditProfile.validator.resetErrors();
 });
 
-buttonAdd.addEventListener("click", () => {
-  formAdd.validator.resetErrors();
+buttonAddCard.addEventListener("click", () => {
+  formAddCard.validator.resetErrors();
   popupAdd.open();
 });
