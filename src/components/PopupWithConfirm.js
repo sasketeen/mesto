@@ -3,11 +3,11 @@ import Popup from "./Popup";
 export default class PopupWithConfirm extends Popup {
   constructor(popupSelector) {
     super(popupSelector);
-    this._saveButton = this._popup.querySelector('.popup__saceButton');
+    this._saveButton = this._popup.querySelector('.popup__saveButton');
   }
 
   setButtonHandler(handler) {
-    this._buttonHandler = handler
+    this._buttonHandler = handler;
   }
 
   setEventListeners() {
@@ -20,10 +20,12 @@ export default class PopupWithConfirm extends Popup {
 
   close() {
     super.close();
-    document.removeEventListener('keydown', this._handleEnterClose)
+    document.removeEventListener('keydown', this._handleEnterClose);
   }
 
   _handleEnterClose = (evt) => {
-    if (evt.key === "Enter") this._buttonHandler;
+    if (evt.key === "Enter") {
+      this._buttonHandler();
+    }
   }
 }

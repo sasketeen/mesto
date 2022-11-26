@@ -4,6 +4,7 @@ export default class Card {
     templateSelector,
     handleCardClick,
     handleLikeClick,
+    handleDeleteClick,
     userId
   ) {
     this._name = name;
@@ -16,6 +17,7 @@ export default class Card {
 
     this._handleOpenImagePopup = handleCardClick;
     this._handleLikeClick = handleLikeClick;
+    this._handleDeleteClick = handleDeleteClick;
   }
 
   // функция настройки и заполнения карточки данными. Возвращает готовую карточку
@@ -24,18 +26,28 @@ export default class Card {
     this._cardImage = this._card.querySelector(".card__image");
     const cardSubtitle = this._card.querySelector(".card__subtitle");
     this._buttonLike = this._card.querySelector(".card__likeButton");
+    this._buttonDelete = this._card.querySelector(".card__buttonDelete");
     this._likeCounter = this._card.querySelector(".card__likeCounter");
 
     this._cardImage.src = this._link;
     this._cardImage.alt = this._name;
     cardSubtitle.textContent = this._name;
     this._setEventListeners();
+    this.updateLikes(this._likes);
 
-    if ( this._likes.some((user) => user._id === this._userId) ) {
+    if (!this._isOwner()) {
+      this._buttonDelete.remove();
+      this._buttonDelete = null;
+    }
+    if (this._likes.some((user) => user._id === this._userId)) {
       this.toggleButtonLike();
     }
-    this.updateLikes(this._likes);
     return this._card;
+  }
+
+  deleteCard() {
+    this._card.remove();
+    this._card = null;
   }
 
   toggleButtonLike() {
@@ -47,9 +59,9 @@ export default class Card {
   }
 
   isLiked() {
-    if (this._buttonLike.classList.contains("card__likeButton_active")) {
-      return true;
-    }
+    return this._buttonLike.classList.contains("card__likeButton_active")
+      ? true
+      : false;
   }
 
   // функция поиска и копирвания шаблона карточки. Возвращает пустой шаблон карточки
@@ -62,23 +74,21 @@ export default class Card {
 
   // функция установки слушателей в карточке
   _setEventListeners() {
-    const buttonDelete = this._card.querySelector(".card__buttonDelete");
-
-    buttonDelete.addEventListener("click", () => {
-      this._handleDeleteClick();
-    });
+    if (this._isOwner()) {
+      this._buttonDelete.addEventListener("click", () => {
+        this._handleDeleteClick(this, this._id);
+      });
+    }
     this._buttonLike.addEventListener("click", () => {
-      this._handleLikeClick(this._id);
+      this._handleLikeClick(this, this._id);
     });
     this._cardImage.addEventListener("click", () => {
       this._handleImageClick();
     });
   }
 
-  // функция обработки клика по кнопке удаления
-  _handleDeleteClick() {
-    this._card.remove();
-    this._card = null;
+  _isOwner() {
+    return this._ownerId === this._userId ? true : false;
   }
 
   // функция обработки клика по фото
