@@ -4,6 +4,7 @@ import Card from "../components/Card.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithConfirm from "../components/PopupWithConfirm";
 import UserInfo from "../components/UserInfo.js";
 import Api from '../components/Api';
 
@@ -85,6 +86,8 @@ popupAdd.setEventListeners();
 const popupZoom = new PopupWithImage(".popup_type_image");
 popupZoom.setEventListeners();
 
+const popupConfirm = new PopupWithConfirm('.popup_type_confirm');
+popupConfirm.setEventListeners();
 
 // создание экземпляра класса секции
 const cardList = new Section((cardData) => createCard(cardData), ".elements__list");
@@ -96,36 +99,50 @@ const userInfo = new UserInfo({
   avatarSelector: ".profile__avatar",
 });
 
+const handleCardClick = (imageData) => popupZoom.open(imageData);
+const handleLikeClick = (card, cardId) => {
+  if (card.isLiked()) {
+    api
+      .removeLike(cardId)
+      .then((newCardData) => {
+        card.updateLikes(newCardData.likes);
+        card.toggleButtonLike();
+      })
+      .catch((err) => console.log(err));
+  } else {
+    api
+      .addLike(cardId)
+      .then((newCardData) => {
+        card.updateLikes(newCardData.likes);
+        card.toggleButtonLike();
+      })
+      .catch((err) => console.log(err));
+  }
+};
+const handleDeleteClick = (card, cardId) => {
+  popupConfirm.open();
+  popupConfirm.setButtonHandler(() => {
+    api
+      .deleteCard(cardId)
+      .then(() => {
+        popupConfirm.close();
+        card.deleteCard();
+      })
+      .catch((err) => console.log(err));
+  });
+}
 /**
  *
- * @param {object} cardData - объект содержаший название (поле name) и ссылку (поле link) на картинку
+ * @param {object} cardData - объект содержаший данные карточки
  * @returns {object} заполненный экземпляр карточки
  */
-function createCard(cardData) {
+const createCard = (cardData) => {
   const cardCopy = new Card(
     cardData,
     ".cardCopy",
-    (imageData) => popupZoom.open(imageData),
-    (cardId) => {
-      if (cardCopy.isLiked()) {
-        api
-          .removeLike(cardId)
-          .then((cardData) => {
-            cardCopy.updateLikes(cardData.likes);
-            cardCopy.toggleButtonLike();
-          })
-          .catch((err) => console.log(err));
-      }
-      else {
-        api
-          .addLike(cardId)
-          .then((cardData) => {
-            cardCopy.updateLikes(cardData.likes);
-            cardCopy.toggleButtonLike();
-          })
-          .catch((err) => console.log(err));
-      }
-    },
+    handleCardClick,
+    handleLikeClick,
+    handleDeleteClick,
     userId
   );
   return cardCopy.makeCard();
