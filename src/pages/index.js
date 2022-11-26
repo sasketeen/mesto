@@ -1,4 +1,4 @@
-import './index.css';
+import "./index.css";
 import FormValidator from "../components/FormValidator.js";
 import Card from "../components/Card.js";
 import Section from "../components/Section.js";
@@ -6,7 +6,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithConfirm from "../components/PopupWithConfirm";
 import UserInfo from "../components/UserInfo.js";
-import Api from '../components/Api';
+import Api from "../components/Api";
 
 let userId;
 const buttonEdit = document.querySelector(".profile__editButton");
@@ -26,6 +26,7 @@ const apiConfig = {
   },
 };
 
+//создание объектов форм и активация валидации
 /**
  *
  * @param {string} selector - селектор формы
@@ -40,7 +41,8 @@ const getFormObj = (selector) => {
 };
 const formAdd = getFormObj(".addForm");
 const formEdit = getFormObj(".editForm");
-
+formAdd.validator.enableValidation();
+formEdit.validator.enableValidation();
 
 // создание экземпляра класса Api
 const api = new Api(apiConfig);
@@ -54,10 +56,6 @@ Promise.all([api.getCards(), api.getUserInfo()])
   })
   .catch((err) => console.log(err));
 
-// добавление валидации
-formAdd.validator.enableValidation();
-formEdit.validator.enableValidation();
-
 // создание экземпляров классов попапа
 const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
   api
@@ -66,7 +64,7 @@ const popupEdit = new PopupWithForm(".popup_type_edit", (inputsValues) => {
       userInfo.setUserInfo(newUserData);
       popupEdit.close();
     })
-    .catch((err) => console.log(err))
+    .catch((err) => console.log(err));
 });
 popupEdit.setEventListeners();
 
@@ -86,20 +84,28 @@ popupAdd.setEventListeners();
 const popupZoom = new PopupWithImage(".popup_type_image");
 popupZoom.setEventListeners();
 
-const popupConfirm = new PopupWithConfirm('.popup_type_confirm');
+const popupConfirm = new PopupWithConfirm(".popup_type_confirm");
 popupConfirm.setEventListeners();
 
 // создание экземпляра класса секции
-const cardList = new Section((cardData) => createCard(cardData), ".elements__list");
+const cardList = new Section(
+  (cardData) => createCard(cardData),
+  ".elements__list"
+);
 
-// создание экземпляра класса информации
-const userInfo = new UserInfo({
-  nameSelector: ".profile__name",
-  descriptionSelector: ".profile__description",
-  avatarSelector: ".profile__avatar",
-});
+/**
+ * Обработчик клика по картинке
+ * @param {object} imageData - данные картинки (link, name)
+ */
+const handleCardClick = (imageData) => {
+  popupZoom.open(imageData);
+};
 
-const handleCardClick = (imageData) => popupZoom.open(imageData);
+/**
+ * Обработчик лайка
+ * @param {object} card - экземпляр карточки
+ * @param {string} cardId - уникальный id карточки
+ */
 const handleLikeClick = (card, cardId) => {
   if (card.isLiked()) {
     api
@@ -119,6 +125,12 @@ const handleLikeClick = (card, cardId) => {
       .catch((err) => console.log(err));
   }
 };
+
+/**
+ * Обработчик удаления
+ * @param {object} card - экземпляр карточки
+ * @param {string} cardId - уникальный id карточки
+ */
 const handleDeleteClick = (card, cardId) => {
   popupConfirm.open();
   popupConfirm.setButtonHandler(() => {
@@ -130,10 +142,11 @@ const handleDeleteClick = (card, cardId) => {
       })
       .catch((err) => console.log(err));
   });
-}
+};
+
 /**
- *
- * @param {object} cardData - объект содержаший данные карточки
+ * Функция создания готовой карточки
+ * @param {object} cardData - данные карточки
  * @returns {object} заполненный экземпляр карточки
  */
 const createCard = (cardData) => {
@@ -146,7 +159,14 @@ const createCard = (cardData) => {
     userId
   );
   return cardCopy.makeCard();
-}
+};
+
+// создание экземпляра класса информации
+const userInfo = new UserInfo({
+  nameSelector: ".profile__name",
+  descriptionSelector: ".profile__description",
+  avatarSelector: ".profile__avatar",
+});
 
 // добавление слушателей
 buttonEdit.addEventListener("click", () => {

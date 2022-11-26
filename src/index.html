@@ -14,14 +14,17 @@
   <main class="content">
     <section class="profile">
       <div class="profile__card">
-        <img src="#" alt="Аватар пользователя" class="profile__avatar">
+        <div class="profile__avatarContainer">
+          <img src="#" alt="Аватар пользователя" class="profile__avatar">
+          <button type="button" class="button profile__avatarButton" aria-label="Редактировать аватар"></button>
+        </div>
         <div class="profile__info">
           <h1 class="profile__name"></h1>
-          <button class="button profile__editButton" type="button" name="edit" aria-label="Редактировать профиль"></button>
+          <button class="button profile__editButton" type="button" aria-label="Редактировать профиль"></button>
           <p class="profile__description"></p>
         </div>
       </div>
-      <button class="button profile__addButton" type="button" name="add" aria-label="Добавить фото"></button>
+      <button class="button profile__addButton" type="button" aria-label="Добавить фото"></button>
     </section>
 
     <section class="elements">
