@@ -45,9 +45,9 @@ export default class PopupWithConfirm extends Popup {
    */
   showLoading(isLoading) {
     if (isLoading) {
-      this._button.textContent = "Удаление...";
+      this._saveButton.textContent = "Удаление...";
     } else {
-      this._button.textContent = "Да";
+      this._saveButton.textContent = "Да";
     }
   }
 
