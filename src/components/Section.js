@@ -1,18 +1,29 @@
+/** Класс добвления элементов на страницу */
 export default class Section {
-  constructor({ items, renderer }, containerSelector) {
-    this._items = items;
+  /**
+   * @param {Function} renderer - функция отрисовки
+   * @param {String} containerSelector - селектор контейнера для отрисовки
+   */
+  constructor(renderer, containerSelector) {
     this._renderer = renderer;
     this._container = document.querySelector(containerSelector);
   }
 
-  // функция отрисовки начальных карточек
-  renderItems() {
-    this._items.forEach((item) => {
-      this._renderer(item);
+  /**
+   * Функция отрисовки начальных данных
+   * @param {Array} itemsData - массив начальных данных
+   */
+  renderItems(itemsData) {
+    itemsData.forEach((itemData) => {
+      const item = this._renderer(itemData);
+      this._container.append(item)
     });
   }
 
-  // функция отрисовки 1 карточки
+ /**
+  * Функция отрисовки элемента
+  * @param {Object} item - элемент
+  */
   addItem(item) {
     this._container.prepend(item);
   }
