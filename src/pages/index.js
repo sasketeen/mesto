@@ -165,7 +165,7 @@ const handleLikeClick = (card, cardId) => {
  */
 const handleDeleteClick = (card, cardId) => {
   popupConfirm.open();
-  popupConfirm.setButtonHandler(() => {
+  popupConfirm.setSubmitHandler(() => {
     popupConfirm.showLoading(true);
     api
       .deleteCard(cardId)

@@ -9,6 +9,7 @@ export default class PopupWithConfirm extends Popup {
    */
   constructor(popupSelector) {
     super(popupSelector);
+    this._form = this._popup.querySelector(".popup__form");
     this._saveButton = this._popup.querySelector(".popup__saveButton");
   }
 
@@ -16,8 +17,8 @@ export default class PopupWithConfirm extends Popup {
    * Функция задания колбека для слушателя нажатия на кнопку
    * @param {Function} handler - функция обработчик
    */
-  setButtonHandler(handler) {
-    this._buttonHandler = handler;
+  setSubmitHandler(handler) {
+    this._submitHandler = handler;
   }
 
   /**
@@ -25,10 +26,10 @@ export default class PopupWithConfirm extends Popup {
    */
   setEventListeners() {
     super.setEventListeners();
-    this._saveButton.addEventListener("click", () => {
-      this._buttonHandler();
+    this._form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      this._submitHandler();
     });
-    document.addEventListener("keydown", this._handleEnterClose);
   }
 
   /**
@@ -50,14 +51,4 @@ export default class PopupWithConfirm extends Popup {
       this._saveButton.textContent = "Да";
     }
   }
-
-  /**
-   * Функция обработки нажатия на Enter
-   * @param {*} evt - событие
-   */
-  _handleEnterClose = (evt) => {
-    if (evt.key === "Enter") {
-      this._buttonHandler();
-    }
-  };
 }
