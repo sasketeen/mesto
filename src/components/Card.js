@@ -52,9 +52,8 @@ export default class Card {
       this._buttonDelete.remove();
       this._buttonDelete = null;
     }
-    if (this._likes.some((user) => user._id === this._userId)) {
-      this.toggleButtonLike();
-    }
+    this.updateLikes(this._likes)
+
     return this._card;
   }
 
@@ -70,15 +69,19 @@ export default class Card {
    * Функция переключения отображеия кнопки лайка
    */
   toggleButtonLike() {
-    this._buttonLike.classList.toggle("card__likeButton_active");
+    this.isLiked()
+      ? this._buttonLike.classList.add("card__likeButton_active")
+      : this._buttonLike.classList.remove("card__likeButton_active");
   }
 
   /**
-   * Функция обновления счетчика лайкнувших пользователей на странице
+   * Функция обновления лайков
    * @param {Array} likes - массив лайкнувших пользователей
    */
   updateLikes(likes) {
+    this._likes = likes;
     this._likeCounter.textContent = likes.length;
+    this.toggleButtonLike();
   }
 
   /**
@@ -86,9 +89,7 @@ export default class Card {
    * @returns {Boolean} результат проверки
    */
   isLiked() {
-    return this._buttonLike.classList.contains("card__likeButton_active")
-      ? true
-      : false;
+    return this._likes.some((userlike) => userlike._id === this._userId);
   }
 
   /**

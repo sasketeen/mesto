@@ -118,7 +118,10 @@ popupConfirm.setEventListeners();
 
 // создание экземпляра класса секции
 const cardList = new Section(
-  (cardData) => createCard(cardData),
+  (cardData) => {
+    const item = createCard(cardData);
+    cardList.appendItem(item);
+  },
   ".elements__list"
 );
 
@@ -141,7 +144,6 @@ const handleLikeClick = (card, cardId) => {
       .removeLike(cardId)
       .then((newCardData) => {
         card.updateLikes(newCardData.likes);
-        card.toggleButtonLike();
       })
       .catch((err) => console.log(err));
   } else {
@@ -149,7 +151,6 @@ const handleLikeClick = (card, cardId) => {
       .addLike(cardId)
       .then((newCardData) => {
         card.updateLikes(newCardData.likes);
-        card.toggleButtonLike();
       })
       .catch((err) => console.log(err));
   }
@@ -162,7 +163,7 @@ const handleLikeClick = (card, cardId) => {
  */
 const handleDeleteClick = (card, cardId) => {
   popupConfirm.open();
-  popupConfirm.setButtonHandler(() => {
+  popupConfirm.setSubmitHandler(() => {
     popupConfirm.showLoading(true);
     api
       .deleteCard(cardId)
