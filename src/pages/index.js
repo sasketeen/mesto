@@ -144,7 +144,6 @@ const handleLikeClick = (card, cardId) => {
       .removeLike(cardId)
       .then((newCardData) => {
         card.updateLikes(newCardData.likes);
-        card.toggleButtonLike();
       })
       .catch((err) => console.log(err));
   } else {
@@ -152,7 +151,6 @@ const handleLikeClick = (card, cardId) => {
       .addLike(cardId)
       .then((newCardData) => {
         card.updateLikes(newCardData.likes);
-        card.toggleButtonLike();
       })
       .catch((err) => console.log(err));
   }
