@@ -15,9 +15,12 @@ export default class Section {
    */
   renderItems(itemsData) {
     itemsData.forEach((itemData) => {
-      const item = this._renderer(itemData);
-      this._container.append(item)
+      this._renderer(itemData);
     });
+  }
+
+  appendItem(item) {
+    this._container.append(item);
   }
 
  /**

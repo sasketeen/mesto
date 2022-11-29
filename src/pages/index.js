@@ -118,7 +118,10 @@ popupConfirm.setEventListeners();
 
 // создание экземпляра класса секции
 const cardList = new Section(
-  (cardData) => createCard(cardData),
+  (cardData) => {
+    const item = createCard(cardData);
+    cardList.appendItem(item);
+  },
   ".elements__list"
 );
 
