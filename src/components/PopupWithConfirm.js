@@ -33,14 +33,6 @@ export default class PopupWithConfirm extends Popup {
   }
 
   /**
-   * Функция закрытия модального окна
-   */
-  close() {
-    super.close();
-    document.removeEventListener("keydown", this._handleEnterClose);
-  }
-
-  /**
    * Функция отрисовки сообщения при отправке данных на сервер
    * @param {Boolean} isLoading - флаг состояния отправки
    */

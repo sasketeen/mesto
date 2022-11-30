@@ -14,9 +14,7 @@ export default class Section {
    * @param {Array} itemsData - массив начальных данных
    */
   renderItems(itemsData) {
-    itemsData.forEach((itemData) => {
-      this._renderer(itemData);
-    });
+    itemsData.forEach(this._renderer);
   }
 
   appendItem(item) {
