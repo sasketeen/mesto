@@ -139,21 +139,12 @@ const handleCardClick = (imageData) => {
  * @param {string} cardId - уникальный id карточки
  */
 const handleLikeClick = (card, cardId) => {
-  if (card.isLiked()) {
-    api
-      .removeLike(cardId)
-      .then((newCardData) => {
-        card.updateLikes(newCardData.likes);
-      })
-      .catch((err) => console.log(err));
-  } else {
-    api
-      .addLike(cardId)
-      .then((newCardData) => {
-        card.updateLikes(newCardData.likes);
-      })
-      .catch((err) => console.log(err));
-  }
+  const action = card.isLiked() ? api.removeLike(cardId) : api.addLike(cardId);
+  action
+    .then((newCardData) => {
+      card.updateLikes(newCardData.likes);
+    })
+    .catch((err) => console.log(err));
 };
 
 /**

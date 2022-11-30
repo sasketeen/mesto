@@ -46,7 +46,6 @@ export default class Card {
     this._cardImage.alt = this._name;
     cardSubtitle.textContent = this._name;
     this._setEventListeners();
-    this.updateLikes(this._likes);
 
     if (!this._isOwner()) {
       this._buttonDelete.remove();
@@ -128,7 +127,7 @@ export default class Card {
    * @returns {Boolean} результат проверки
    */
   _isOwner() {
-    return this._ownerId === this._userId ? true : false;
+    return this._ownerId === this._userId;
   }
 }
 
